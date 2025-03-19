@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ECharts Bar Chart with Different Colors</title>
+    <!-- 引入 ECharts 文件 -->
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.2/dist/echarts.min.js"></script>
+</head>
+
+<body>
+    <!-- 为 ECharts 准备一个具备大小（宽高）的 DOM -->
+    <div id="main" style="width: 1000px;height:600px;"></div>
+    <script type="text/javascript">
+        // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('main'));
+
+        // 指定图表的配置项和数据
+        var option = {
+            grid: {
+                left: '5%',
+                right: '5%',
+                bottom: '30%' // 增大底部边距，为 x 轴标签留出更多空间
+            },
+            xAxis: {
+                type: 'category',
+                data: ['NLP', 'LLM 简单提示词', 'LLM 提示词调优', 'VLM 视频切10帧分析'],
+                axisLabel: {
+                    rotate: 45,
+                    fontSize: 8, // 继续缩小字体大小
+                    formatter: function (value) {
+                        // 长标签换行显示
+                        return value.split('（').join('（\n');
+                    }
+                }
+            },
+            yAxis: {
+                type: 'value',
+                name: '准确率: %'
+            },
+            series: [
+                {
+                    data: [
+                        {
+                            value: 55,
+                            itemStyle: {
+                                color: '#8B0000'
+                            }
+                        },
+                        {
+                            value: 70,
+                            itemStyle: {
+                                color: '#00008B'
+                            }
+                        },
+                        {
+                            value: 85,
+                            itemStyle: {
+                                color: '#808000'
+                            }
+                        },
+                        {
+                            value: 99.75,
+                            itemStyle: {
+                                color: '#006400'
+                            }
+                        }
+                    ],
+                    type: 'bar'
+                }
+            ]
+        };
+
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+    </script>
+</body>
+
+</html>    
