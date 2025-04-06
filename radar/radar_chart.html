@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ECharts Radar Chart with Seven Aspects</title>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+</head>
+
+<body>
+    <div id="radarChart" style="width: 800px; height: 600px;"></div>
+    <script>
+        var myChart = echarts.init(document.getElementById('radarChart'));
+        var option = {
+            tooltip: {
+                trigger: 'item',
+                textStyle: {
+                    color: '#000',
+                    fontSize: 16
+                }
+            },
+            radar: {
+                indicator: [
+                    { name: '录音解析', max: 100 },
+                    { name: '情感分析', max: 100 },
+                    { name: '意图分析', max: 100 },
+                    { name: '工单填写', max: 100 },
+                    { name: '处理报告', max: 100 },
+                    { name: '质检评分', max: 100 },
+                    { name: '异常检测', max: 100 }
+                ],
+                shape: 'circle',
+                splitNumber: 5,
+                axisName: {
+                    color: '#000',
+                    fontSize: 16
+                },
+                splitLine: {
+                    lineStyle: {
+                        color: '#ccc'
+                    }
+                },
+                splitArea: {
+                    areaStyle: {
+                        color: ['rgba(255, 255, 255, 0.1)', 'rgba(255, 255, 255, 0.2)', 'rgba(255, 255, 255, 0.3)', 'rgba(255, 255, 255, 0.4)', 'rgba(255, 255, 255, 0.5)']
+                    }
+                }
+            },
+            series: [
+                {
+                    name: '业务评估',
+                    type: 'radar',
+                    data: [
+                        {
+                            value: [85, 70, 80, 75, 90, 88, 72],
+                            name: '业务表现',
+                            areaStyle: {
+                                color: 'rgba(255, 205, 148, 0.8)'
+                            },
+                            lineStyle: {
+                                color: 'rgba(255, 140, 0, 1)'
+                            },
+                            label: {
+                                show: true,
+                                color: '#000',
+                                fontSize: 14
+                            }
+                        }
+                    ]
+                }
+            ]
+        };
+        myChart.setOption(option);
+    </script>
+</body>
+
+</html> 
