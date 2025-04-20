@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>ECharts 水平排序柱状图</title>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.0/dist/echarts.min.js"></script>
+</head>
+
+<body>
+    <div id="main" style="width: 800px; height: 550px;"></div>
+    <script>
+        // 原始数据
+        const data = [
+            { id: '0003', value: 24 },
+            { id: '0010', value: 24 },
+            { id: '0013', value: 24 },
+            { id: '0026', value: 24 },
+            { id: '0033', value: 24 },
+            { id: '0047', value: 24 },
+            { id: '0018', value: 25 },
+            { id: '0198', value: 25 },
+            { id: '0156', value: 27 },
+            { id: '0192', value: 27 }
+        ];
+
+
+        const categories = data.map(item => item.id);
+        const values = data.map(item => item.value);
+
+        // 定义一组亮丽的颜色
+        const brightColors = [
+            '#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF',
+            '#FF9F40', '#FF5733', '#C70039', '#900C3F', '#581845'
+        ];
+
+        const option = {
+            title: {
+                text: '综合得分前 10 名',
+                left: 'center'
+            },
+            tooltip: {
+                trigger: 'axis',
+                axisPointer: {
+                    type: 'shadow'
+                }
+            },
+            xAxis: {
+                type: 'value'
+            },
+            yAxis: {
+                type: 'category',
+                data: categories
+            },
+            series: [
+                {
+                    name: '数值',
+                    type: 'bar',
+                    data: values,
+                    label: {
+                        show: true,
+                        position: 'right'
+                    },
+                    itemStyle: {
+                        color: function (params) {
+                            return brightColors[params.dataIndex % brightColors.length];
+                        }
+                    }
+                }
+            ]
+        };
+
+        const myChart = echarts.init(document.getElementById('main'));
+        myChart.setOption(option);
+
+        window.addEventListener('resize', function () {
+            myChart.resize();
+        });
+    </script>
+</body>
+
+</html>
+    

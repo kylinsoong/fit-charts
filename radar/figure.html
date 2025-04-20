@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>ECharts 雷达图示例</title>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.0/dist/echarts.min.js"></script>
+</head>
+
+<body>
+    <div id="main" style="width: 600px;height:450px;"></div>
+    <script type="text/javascript">
+        var myChart = echarts.init(document.getElementById('main'));
+        var option = {
+            title: {
+                text: '0156 号客服画像(第一名)',
+                left: 'center'
+            },
+            radar: {
+                indicator: [
+                    { name: '专业能力', max: 5 },
+                    { name: '催收效率', max: 5 },
+                    { name: '沟通技巧', max: 5 },
+                    { name: '意图掌控', max: 5 },
+                    { name: '情绪控制', max: 5 },
+                    { name: '应变能力', max: 5 }
+                ],
+                center: ['50%', '50%'],
+                radius: '70%',
+                shape: 'polygon',
+                name: {
+                    textStyle: {
+                        color: '#333'
+                    }
+                },
+                axisLine: {
+                    lineStyle: {
+                        color: '#ddd'
+                    }
+                },
+                splitLine: {
+                    lineStyle: {
+                        color: '#eee'
+                    }
+                }
+            },
+            series: [{
+                name: '能力值',
+                type: 'radar',
+                data: [{
+                    value: [5, 4, 5, 5, 5, 3],
+                    areaStyle: {
+                        color: 'rgba(255, 105, 180, 0.3)',
+                        opacity: 0.2
+                    },
+                    itemStyle: {
+                        color: 'rgb(255, 105, 180)'
+                    },
+                    lineStyle: {
+                        width: 2,
+                        color: 'rgb(255, 105, 180)'
+                    }
+                }]
+            }]
+        };
+        myChart.setOption(option);
+        window.addEventListener('resize', function () {
+            myChart.resize();
+        });
+    </script>
+</body>
+
+</html>
+    

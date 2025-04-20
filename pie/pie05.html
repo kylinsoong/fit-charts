@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>发生异常后客服状态分布饼图</title>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.0/dist/echarts.min.js"></script>
+</head>
+
+<body>
+    <div id="main" style="width: 700px; height: 600px;"></div>
+    <script>
+        // 数据
+        const data = [
+            { value: 3, name: '发生异常后客服不冷静' },
+            { value: 5, name: '发生异常后客服保持静' }
+        ];
+
+        // 亮丽且区分度高的颜色数组
+        const brightDistinctColors = [
+            '#FF6384', '#36A2EB'
+        ];
+
+        const option = {
+            tooltip: {
+                trigger: 'item',
+                formatter: '{a} <br/>{b}: {c} ({d}%)'
+            },
+            legend: {
+                orient: 'vertical',
+                left: 'left',
+                data: data.map(item => item.name)
+            },
+            series: [
+                {
+                    name: '发生异常后客服状态分布',
+                    type: 'pie',
+                    radius: '50%',
+                    center: ['50%', '50%'],
+                    data: data,
+                    color: brightDistinctColors,
+                    label: {
+                        show: true,
+                        formatter: '{b}: {d}%'
+                    },
+                    emphasis: {
+                        itemStyle: {
+                            shadowBlur: 10,
+                            shadowOffsetX: 0,
+                            shadowColor: 'rgba(0, 0, 0, 0.5)'
+                        }
+                    },
+                    itemStyle: {
+                        borderWidth: 3,
+                        borderColor: '#fff'
+                    }
+                }
+            ]
+        };
+
+        const myChart = echarts.init(document.getElementById('main'));
+        myChart.setOption(option);
+    </script>
+</body>
+
+</html>    

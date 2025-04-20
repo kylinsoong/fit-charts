@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>是与否回答分布饼图</title>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.0/dist/echarts.min.js"></script>
+</head>
+
+<body>
+    <div id="main" style="width: 600px; height: 600px;"></div>
+    <script>
+        // 数据
+        const data = [
+            { value: 5, name: '是' },
+            { value: 195, name: '否' }
+        ];
+
+        // 亮丽且区分度高的颜色数组
+        const brightDistinctColors = [
+            '#FF6384', '#36A2EB'
+        ];
+
+        const option = {
+            tooltip: {
+                trigger: 'item',
+                formatter: '{a} <br/>{b}: {c} ({d}%)'
+            },
+            legend: {
+                orient: 'vertical',
+                left: 'left',
+                data: ['是', '否']
+            },
+            series: [
+                {
+                    name: '回答分布',
+                    type: 'pie',
+                    radius: '50%',
+                    center: ['50%', '50%'],
+                    data: data,
+                    color: brightDistinctColors,
+                    label: {
+                        show: true,
+                        formatter: '{b}: {d}%'
+                    },
+                    emphasis: {
+                        itemStyle: {
+                            shadowBlur: 10,
+                            shadowOffsetX: 0,
+                            shadowColor: 'rgba(0, 0, 0, 0.5)'
+                        }
+                    }
+                }
+            ]
+        };
+
+        const myChart = echarts.init(document.getElementById('main'));
+        myChart.setOption(option);
+    </script>
+</body>
+
+</html>    

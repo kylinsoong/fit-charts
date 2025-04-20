@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>ECharts 水平排序柱状图</title>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.0/dist/echarts.min.js"></script>
+</head>
+
+<body>
+    <div id="main" style="width: 800px; height: 600px;"></div>
+    <script>
+        // 原始数据
+        const data = [
+            { id: '0078', value: 14 },
+            { id: '0101', value: 14 },
+            { id: '0109', value: 14 },
+            { id: '0121', value: 14 },
+            { id: '0124', value: 14 },
+            { id: '0174', value: 14 },
+            { id: '0179', value: 14 },
+            { id: '0196', value: 14 },
+            { id: '0149', value: 13 },
+            { id: '0048', value: 12 }
+        ];
+
+        // 按值升序排序
+        data.sort((a, b) => a.value - b.value);
+
+        const categories = data.map(item => item.id);
+        const values = data.map(item => item.value);
+
+        // 定义一组正常的颜色
+        const normalColors = [
+            '#3366CC', '#DC3912', '#FF9900', '#109618', '#990099',
+            '#0099C6', '#DD4477', '#66AA00', '#B82E2E', '#316395'
+        ];
+
+        const option = {
+            title: {
+                text: '综合得分后 10 名',
+                left: 'center'
+            },
+            tooltip: {
+                trigger: 'axis',
+                axisPointer: {
+                    type: 'shadow'
+                }
+            },
+            xAxis: {
+                type: 'value'
+            },
+            yAxis: {
+                type: 'category',
+                data: categories
+            },
+            series: [
+                {
+                    name: '数值',
+                    type: 'bar',
+                    data: values,
+                    label: {
+                        show: true,
+                        position: 'right'
+                    },
+                    itemStyle: {
+                        color: function (params) {
+                            return normalColors[params.dataIndex % normalColors.length];
+                        }
+                    }
+                }
+            ]
+        };
+
+        const myChart = echarts.init(document.getElementById('main'));
+        myChart.setOption(option);
+
+        window.addEventListener('resize', function () {
+            myChart.resize();
+        });
+    </script>
+</body>
+
+</html>
+    

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>客户沟通信息卡片</title>
+    <style>
+        .card {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            font-family: '微软雅黑', sans-serif;
+        }
+        .title {
+            color: #2c3e50;
+            font-size: 24px;
+            font-weight: 600;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 8px;
+            margin-bottom: 20px;
+        }
+        .info-item {
+            display: grid;
+            grid-template-columns: 120px auto;
+            line-height: 1.8;
+            color: #333;
+            font-size: 16px;
+        }
+        .info-item span:first-child {
+            font-weight: 500;
+            color: #2c3e50;
+        }
+        .summary {
+            margin: 20px 0;
+            padding: 15px;
+            border-left: 4px solid #e74c3c;
+            background-color: #f8f9fa;
+            line-height: 1.6;
+        }
+        .note {
+            color: #e74c3c;
+            font-weight: 500;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <div class="title">客户沟通记录(样本编号: 0097)</div>
+        
+        <div class="info-item"><span>客户姓名：</span>王斌</div>
+        <div class="info-item"><span>交互轮次：</span>12</div>
+        <div class="info-item"><span>对话时长：</span>178.85秒</div>
+        <div class="info-item"><span>产品名称：</span>京东金融</div>
+        
+        <div class="summary">
+            <span>对话总结：</span><br>
+            客服联系客户王斌，告知其京东金融账单已逾期两天（500余元未处理），询问未处理原因。客户称建设银行8968银行卡被冻结导致无法还款。客服建议客户通过对公还款或找他人代还，并提供还款成功截图，同时可提供线下对公账户。客户最初表示明天上午处理，客服指出已逾期两天，明天为第三天，客户已被标注为高风险用户，要求6点前还款。客户解释自己在山上，需7点半后下山才能找人处理，电话沟通不清。客服提议通过支付宝或银行卡对公账户还款，客户同意晚上处理（通过对公还款，下山后让朋友处理）。客服欲加客户微信发送对公账户，客户提供微信（A13875822737），并选择支付宝方式，客服表示将让工作人员加其微信发送账户。
+        </div>
+        
+        <div class="info-item"><span>客服完成催收：</span>是</div>
+        <div class="note"><span>下次跟进：</span>需要跟进，跟进时间为客户承诺的晚上还款后，确认还款是否成功。</div>
+    </div>
+</body>
+</html>
