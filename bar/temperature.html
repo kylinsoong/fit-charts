@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Temperature 与重复率关系可视化</title>
+  <!-- 引入 ECharts -->
+  <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+  <!-- 引入 Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- 引入 Font Awesome -->
+  <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  
+  <!-- Tailwind 配置 -->
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#165DFF',
+            secondary: '#54D6FF',
+            dark: '#333333',
+            light: '#F5F7FA',
+          },
+          fontFamily: {
+            inter: ['Inter', 'system-ui', 'sans-serif'],
+          },
+        },
+      }
+    }
+  </script>
+  
+  <!-- 自定义工具类 -->
+  <style type="text/tailwindcss">
+    @layer utilities {
+      .content-auto {
+        content-visibility: auto;
+      }
+      .card-shadow {
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+      }
+      .chart-container {
+        height: clamp(300px, 50vh, 500px);
+      }
+    }
+  </style>
+  
+  <style>
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+    }
+    
+    /* 图表动画 */
+    .chart-appear {
+      animation: fadeIn 0.8s ease-in-out;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    /* 平滑滚动 */
+    html {
+      scroll-behavior: smooth;
+    }
+    
+    /* 响应式文本 */
+    .responsive-title {
+      font-size: clamp(1.5rem, 3vw, 2.5rem);
+    }
+    
+    .responsive-subtitle {
+      font-size: clamp(1rem, 1.5vw, 1.25rem);
+    }
+  </style>
+</head>
+<body class="bg-gray-50 text-dark font-inter">
+  <!-- 导航栏 -->
+  <nav class="bg-white shadow-md fixed w-full z-10 transition-all duration-300" id="navbar">
+    <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+      <div class="flex items-center space-x-2">
+        <i class="fa fa-line-chart text-primary text-2xl"></i>
+        <span class="font-bold text-xl text-primary">数据可视化</span>
+      </div>
+      <div class="hidden md:flex space-x-6">
+        <a href="#chart-section" class="text-gray-700 hover:text-primary transition-colors duration-200">
+          <i class="fa fa-bar-chart mr-1"></i> 图表
+        </a>
+        <a href="#data-section" class="text-gray-700 hover:text-primary transition-colors duration-200">
+          <i class="fa fa-table mr-1"></i> 数据
+        </a>
+        <a href="#analysis-section" class="text-gray-700 hover:text-primary transition-colors duration-200">
+          <i class="fa fa-area-chart mr-1"></i> 分析
+        </a>
+      </div>
+      <button class="md:hidden text-gray-700 focus:outline-none" id="menu-toggle">
+        <i class="fa fa-bars text-xl"></i>
+      </button>
+    </div>
+    <!-- 移动端菜单 -->
+    <div class="md:hidden hidden bg-white shadow-lg absolute w-full" id="mobile-menu">
+      <div class="container mx-auto px-4 py-2 flex flex-col space-y-3">
+        <a href="#chart-section" class="text-gray-700 hover:text-primary py-2 border-b border-gray-100">
+          <i class="fa fa-bar-chart mr-1"></i> 图表
+        </a>
+        <a href="#data-section" class="text-gray-700 hover:text-primary py-2 border-b border-gray-100">
+          <i class="fa fa-table mr-1"></i> 数据
+        </a>
+        <a href="#analysis-section" class="text-gray-700 hover:text-primary py-2">
+          <i class="fa fa-area-chart mr-1"></i> 分析
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- 主内容区 -->
+  <main class="container mx-auto px-4 pt-24 pb-12">
+    <!-- 页面标题 -->
+    <section class="mb-12 text-center">
+      <h1 class="responsive-title font-bold text-primary mb-3">Temperature 与重复率关系分析</h1>
+      <p class="responsive-subtitle text-gray-600 max-w-3xl mx-auto">
+        本图表展示了 Temperature 参数值对模型输出重复率的影响，数据显示随着 Temperature 值的增加，重复率呈现下降趋势。
+      </p>
+    </section>
+    
+    <!-- 图表部分 -->
+    <section id="chart-section" class="mb-16">
+      <div class="bg-white rounded-xl p-6 card-shadow transform hover:shadow-lg transition-all duration-300">
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
+          <h2 class="text-xl font-bold text-gray-800 mb-3 md:mb-0">
+            <i class="fa fa-bar-chart text-primary mr-2"></i>Temperature与重复率关系柱状图
+          </h2>
+          <div class="flex space-x-3">
+            <button id="bar-chart-btn" class="px-4 py-2 bg-primary text-white rounded-lg shadow hover:bg-primary/90 transition-colors active:scale-95 focus:outline-none">
+              <i class="fa fa-bar-chart mr-1"></i> 柱状图
+            </button>
+            <button id="line-chart-btn" class="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg shadow hover:bg-gray-300 transition-colors active:scale-95 focus:outline-none">
+              <i class="fa fa-line-chart mr-1"></i> 折线图
+            </button>
+          </div>
+        </div>
+        <!-- 图表容器 -->
+        <div class="w-full chart-container chart-appear" id="main-chart"></div>
+      </div>
+    </section>
+    
+    <!-- 数据表格 -->
+    <section id="data-section" class="mb-16">
+      <div class="bg-white rounded-xl p-6 card-shadow">
+        <h2 class="text-xl font-bold text-gray-800 mb-6">
+          <i class="fa fa-table text-primary mr-2"></i>原始数据
+        </h2>
+        <div class="overflow-x-auto">
+          <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-50">
+              <tr>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Temperature 值</th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">重复率 (%)</th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">趋势变化</th>
+              </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200">
+              <tr class="hover:bg-gray-50 transition-colors">
+                <td class="px-6 py-4 whitespace-nowrap">0.2</td>
+                <td class="px-6 py-4 whitespace-nowrap">19.93</td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
+                    <i class="fa fa-arrow-up mr-1"></i> 高
+                  </span>
+                </td>
+              </tr>
+              <tr class="hover:bg-gray-50 transition-colors">
+                <td class="px-6 py-4 whitespace-nowrap">0.4</td>
+                <td class="px-6 py-4 whitespace-nowrap">17.52</td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
+                    <i class="fa fa-arrow-down mr-1"></i> 降 2.41%
+                  </span>
+                </td>
+              </tr>
+              <tr class="hover:bg-gray-50 transition-colors">
+                <td class="px-6 py-4 whitespace-nowrap">0.6</td>
+                <td class="px-6 py-4 whitespace-nowrap">17.07</td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
+                    <i class="fa fa-arrow-down mr-1"></i> 降 0.45%
+                  </span>
+                </td>
+              </tr>
+              <tr class="hover:bg-gray-50 transition-colors">
+                <td class="px-6 py-4 whitespace-nowrap">0.8</td>
+                <td class="px-6 py-4 whitespace-nowrap">15.88</td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
+                    <i class="fa fa-arrow-down mr-1"></i> 降 1.19%
+                  </span>
+                </td>
+              </tr>
+              <tr class="hover:bg-gray-50 transition-colors">
+                <td class="px-6 py-4 whitespace-nowrap">1.0</td>
+                <td class="px-6 py-4 whitespace-nowrap">15.80</td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
+                    <i class="fa fa-arrow-down mr-1"></i> 降 0.08%
+                  </span>
+                </td>
+              </tr>
+              <tr class="hover:bg-gray-50 transition-colors">
+                <td class="px-6 py-4 whitespace-nowrap">1.2</td>
+                <td class="px-6 py-4 whitespace-nowrap">14.75</td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
+                    <i class="fa fa-arrow-down mr-1"></i> 降 1.05%
+                  </span>
+                </td>
+              </tr>
+              <tr class="hover:bg-gray-50 transition-colors">
+                <td class="px-6 py-4 whitespace-nowrap">1.4</td>
+                <td class="px-6 py-4 whitespace-nowrap">14.37</td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
+                    <i class="fa fa-arrow-down mr-1"></i> 降 0.38%
+                  </span>
+                </td>
+              </tr>
+              <tr class="hover:bg-gray-50 transition-colors">
+                <td class="px-6 py-4 whitespace-nowrap">1.6</td>
+                <td class="px-6 py-4 whitespace-nowrap">13.05</td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
+                    <i class="fa fa-arrow-down mr-1"></i> 降 1.32%
+                  </span>
+                </td>
+              </tr>
+              <tr class="hover:bg-gray-50 transition-colors">
+                <td class="px-6 py-4 whitespace-nowrap">1.8</td>
+                <td class="px-6 py-4 whitespace-nowrap">12.80</td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
+                    <i class="fa fa-arrow-down mr-1"></i> 降 0.25%
+                  </span>
+                </td>
+              </tr>
+              <tr class="hover:bg-gray-50 transition-colors">
+                <td class="px-6 py-4 whitespace-nowrap">2.0</td>
+                <td class="px-6 py-4 whitespace-nowrap">11.19</td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
+                    <i class="fa fa-arrow-down mr-1"></i> 降 1.61%
+                  </span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+    
+    <!-- 数据分析 -->
+    <section id="analysis-section">
+      <div class="bg-white rounded-xl p-6 card-shadow">
+        <h2 class="text-xl font-bold text-gray-800 mb-6">
+          <i class="fa fa-area-chart text-primary mr-2"></i>数据分析与建议
+        </h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div class="bg-blue-50 p-5 rounded-lg border-l-4 border-primary">
+            <h3 class="font-semibold text-lg mb-3 text-primary">趋势分析</h3>
+            <p class="text-gray-700">
+              从图表可以看出，随着 Temperature 值的增加，重复率呈现明显的下降趋势。这表明较高的 Temperature 值可以有效减少模型输出的重复性。
+            </p>
+          </div>
+          <div class="bg-green-50 p-5 rounded-lg border-l-4 border-green-500">
+            <h3 class="font-semibold text-lg mb-3 text-green-600">最佳平衡点</h3>
+            <p class="text-gray-700">
+              在 Temperature 值为 1.2 左右时，重复率下降趋势变缓，此时可能是创造性与准确性的最佳平衡点，建议在实际应用中优先考虑该区间。
+            </p>
+          </div>
+          <div class="bg-orange-50 p-5 rounded-lg border-l-4 border-orange-500">
+            <h3 class="font-semibold text-lg mb-3 text-orange-600">使用建议</h3>
+            <p class="text-gray-700">
+              如果需要更高的创新性，可以选择 Temperature 值在 1.6-2.0 之间；如果需要更准确和确定性的输出，建议选择 0.2-0.6 之间的值。
+            </p>
+          </div>
+        </div>
+        
+        <div class="mt-8 bg-gray-50 p-6 rounded-lg">
+          <h3 class="font-semibold text-lg mb-4 text-gray-800">相关性分析</h3>
+          <p class="text-gray-700 mb-4">
+            通过计算 Temperature 值与重复率之间的相关性，可以更准确地了解它们之间的关系：
+          </p>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="bg-white p-4 rounded-lg shadow-sm">
+              <h4 class="font-medium text-gray-700 mb-2">皮尔逊相关系数</h4>
+              <p class="text-2xl font-bold text-primary">-0.97</p>
+              <p class="text-sm text-gray-500 mt-1">接近 -1，表示强负相关</p>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm">
+              <h4 class="font-medium text-gray-700 mb-2">决定系数 (R²)</h4>
+              <p class="text-2xl font-bold text-primary">0.94</p>
+              <p class="text-sm text-gray-500 mt-1">表明 94% 的重复率变化可由 Temperature 解释</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- 页脚 -->
+  <footer class="bg-gray-800 text-white py-8">
+    <div class="container mx-auto px-4">
+      <div class="flex flex-col md:flex-row justify-between items-center">
+        <div class="mb-6 md:mb-0">
+          <div class="flex items-center space-x-2">
+            <i class="fa fa-line-chart text-primary text-2xl"></i>
+            <span class="font-bold text-xl">数据可视化</span>
+          </div>
+          <p class="text-gray-400 mt-2">Temperature 与重复率关系分析工具</p>
+        </div>
+        <div class="flex space-x-6">
+          <a href="#" class="text-gray-400 hover:text-white transition-colors">
+            <i class="fa fa-github text-xl"></i>
+          </a>
+          <a href="#" class="text-gray-400 hover:text-white transition-colors">
+            <i class="fa fa-twitter text-xl"></i>
+          </a>
+          <a href="#" class="text-gray-400 hover:text-white transition-colors">
+            <i class="fa fa-linkedin text-xl"></i>
+          </a>
+        </div>
+      </div>
+      <div class="border-t border-gray-700 mt-8 pt-6 text-center text-gray-400 text-sm">
+        &copy; 2025 数据可视化工具 | 由 ECharts 和 Tailwind CSS 提供支持
+      </div>
+    </div>
+  </footer>
+
+  <!-- 回到顶部按钮 -->
+  <button id="back-to-top" class="fixed bottom-6 right-6 bg-primary text-white rounded-full p-3 shadow-lg opacity-0 invisible transition-all duration-300 hover:bg-primary/90 focus:outline-none">
+    <i class="fa fa-arrow-up"></i>
+  </button>
+
+  <!-- JavaScript -->
+  <script>
+    // 初始化图表
+    const chartDom = document.getElementById('main-chart');
+    const myChart = echarts.init(chartDom);
+    
+    // 图表数据
+    const temperatureData = ['0.2', '0.4', '0.6', '0.8', '1.0', '1.2', '1.4', '1.6', '1.8', '2.0'];
+    const repetitionData = [19.93, 17.52, 17.07, 15.88, 15.80, 14.75, 14.37, 13.05, 12.80, 11.19];
+    
+    // 柱状图配置
+    const barOption = {
+      title: {
+        text: 'Temperature 与重复率关系柱状图',
+        subtext: '数据来源：输入数据',
+        left: 'center',
+        textStyle: {
+          fontSize: 18,
+          fontWeight: 'bold',
+          color: '#333'
+        },
+        subtextStyle: {
+          color: '#666'
+        }
+      },
+      tooltip: {
+        trigger: 'axis',
+        axisPointer: {
+          type: 'shadow'
+        },
+        backgroundColor: 'rgba(255, 255, 255, 0.9)',
+        textStyle: {
+          color: '#333'
+        },
+        formatter: function(params) {
+          return `Temperature: ${params[0].name}<br>重复率: ${params[0].value}%`;
+        }
+      },
+      legend: {
+        data: ['重复率'],
+        right: '10%',
+        itemWidth: 12,
+        itemHeight: 12
+      },
+      grid: {
+        left: '3%',
+        right: '4%',
+        bottom: '3%',
+        containLabel: true
+      },
+      xAxis: {
+        type: 'category',
+        data: temperatureData,
+        axisTick: {
+          alignWithLabel: true
+        },
+        name: 'Temperature',
+        nameLocation: 'middle',
+        nameGap: 25,
+        axisLabel: {
+          color: '#666'
+        },
+        nameTextStyle: {
+          fontSize: 14,
+          color: '#333'
+        }
+      },
+      yAxis: {
+        type: 'value',
+        name: '重复率（%）',
+        nameLocation: 'middle',
+        nameGap: 30,
+        min: 10,
+        max: 20,
+        splitNumber: 5,
+        axisLabel: {
+          formatter: '{value}%',
+          color: '#666'
+        },
+        nameTextStyle: {
+          fontSize: 14,
+          color: '#333'
+        },
+        splitLine: {
+          lineStyle: {
+            color: '#eee'
+          }
+        }
+      },
+      series: [
+        {
+          name: '重复率',
+          type: 'bar',
+          barWidth: '40%',
+          data: repetitionData,
+          itemStyle: {
+            color: new echarts.graphic.LinearGradient(
+              0, 0, 0, 1,
+              [
+                { offset: 0, color: '#165DFF' },
+                { offset: 1, color: '#54D6FF' }
+              ]
+            ),
+            borderRadius: [4, 4, 0, 0]
+          },
+          emphasis: {
+            itemStyle: {
+              color: new echarts.graphic.LinearGradient(
+                0, 0, 0, 1,
+                [
+                  { offset: 0, color: '#0E42B3' },
+                  { offset: 1, color: '#3AA1FF' }
+                ]
+              )
+            }
+          },
+          label: {
+            show: true,
+            position: 'top',
+            formatter: '{c}%',
+            color: '#333',
+            fontSize: 12
+          }
+        }
+      ]
+    };
+    
+    // 折线图配置
+    const lineOption = {
+      title: {
+        text: 'Temperature 与重复率关系折线图',
+        subtext: '数据来源：输入数据',
+        left: 'center',
+        textStyle: {
+          fontSize: 18,
+          fontWeight: 'bold',
+          color: '#333'
+        },
+        subtextStyle: {
+          color: '#666'
+        }
+      },
+      tooltip: {
+        trigger: 'axis',
+        backgroundColor: 'rgba(255, 255, 255, 0.9)',
+        textStyle: {
+          color: '#333'
+        },
+        formatter: function(params) {
+          return `Temperature: ${params[0].name}<br>重复率: ${params[0].value}%`;
+        }
+      },
+      legend: {
+        data: ['重复率'],
+        right: '10%',
+        itemWidth: 12,
+        itemHeight: 12
+      },
+      grid: {
+        left: '3%',
+        right: '4%',
+        bottom: '3%',
+        containLabel: true
+      },
+      xAxis: {
+        type: 'category',
+        data: temperatureData,
+        axisTick: {
+          alignWithLabel: true
+        },
+        name: 'Temperature 值',
+        nameLocation: 'middle',
+        nameGap: 25,
+        axisLabel: {
+          color: '#666'
+        },
+        nameTextStyle: {
+          fontSize: 14,
+          color: '#333'
+        }
+      },
+      yAxis: {
+        type: 'value',
+        name: '重复率（%）',
+        nameLocation: 'middle',
+        nameGap: 30,
+        min: 10,
+        max: 20,
+        splitNumber: 5,
+        axisLabel: {
+          formatter: '{value}%',
+          color: '#666'
+        },
+        nameTextStyle: {
+          fontSize: 14,
+          color: '#333'
+        },
+        splitLine: {
+          lineStyle: {
+            color: '#eee'
+          }
+        }
+      },
+      series: [
+        {
+          name: '重复率',
+          type: 'line',
+          data: repetitionData,
+          symbol: 'circle',
+          symbolSize: 8,
+          lineStyle: {
+            color: '#165DFF',
+            width: 3
+          },
+          itemStyle: {
+            color: '#fff',
+            borderColor: '#165DFF',
+            borderWidth: 2
+          },
+          areaStyle: {
+            color: new echarts.graphic.LinearGradient(
+              0, 0, 0, 1,
+              [
+                { offset: 0, color: 'rgba(22, 93, 255, 0.3)' },
+                { offset: 1, color: 'rgba(22, 93, 255, 0)' }
+              ]
+            )
+          },
+          label: {
+            show: true,
+            position: 'top',
+            formatter: '{c}%',
+            color: '#333',
+            fontSize: 12
+          }
+        }
+      ]
+    };
+    
+    // 初始化图表
+    myChart.setOption(barOption);
+    
+    // 图表类型切换
+    document.getElementById('bar-chart-btn').addEventListener('click', function() {
+      myChart.setOption(barOption);
+      this.classList.remove('bg-gray-200', 'text-gray-700');
+      this.classList.add('bg-primary', 'text-white');
+      document.getElementById('line-chart-btn').classList.remove('bg-primary', 'text-white');
+      document.getElementById('line-chart-btn').classList.add('bg-gray-200', 'text-gray-700');
+    });
+    
+    document.getElementById('line-chart-btn').addEventListener('click', function() {
+      myChart.setOption(lineOption);
+      this.classList.remove('bg-gray-200', 'text-gray-700');
+      this.classList.add('bg-primary', 'text-white');
+      document.getElementById('bar-chart-btn').classList.remove('bg-primary', 'text-white');
+      document.getElementById('bar-chart-btn').classList.add('bg-gray-200', 'text-gray-700');
+    });
+    
+    // 移动端菜单切换
+    document.getElementById('menu-toggle').addEventListener('click', function() {
+      const mobileMenu = document.getElementById('mobile-menu');
+      mobileMenu.classList.toggle('hidden');
+    });
+    
+    // 导航栏滚动效果
+    window.addEventListener('scroll', function() {
+      const navbar = document.getElementById('navbar');
+      const backToTop = document.getElementById('back-to-top');
+      
+      if (window.scrollY > 50) {
+        navbar.classList.add('py-2');
+        navbar.classList.remove('py-3');
+        navbar.classList.add('shadow-lg');
+        
+        backToTop.classList.remove('opacity-0', 'invisible');
+        backToTop.classList.add('opacity-100', 'visible');
+      } else {
+        navbar.classList.remove('py-2');
+        navbar.classList.add('py-3');
+        navbar.classList.remove('shadow-lg');
+        
+        backToTop.classList.add('opacity-0', 'invisible');
+        backToTop.classList.remove('opacity-100', 'visible');
+      }
+    });
+    
+    // 回到顶部按钮
+    document.getElementById('back-to-top').addEventListener('click', function() {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    });
+    
+    // 图表响应式调整
+    window.addEventListener('resize', function() {
+      myChart.resize();
+    });
+  </script>
+</body>
+</html>    

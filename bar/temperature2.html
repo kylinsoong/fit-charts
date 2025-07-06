@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Temperature vs Cosine Similarity</title>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.0/dist/echarts.min.js"></script>
+</head>
+<body>
+    <div id="chart" style="width: 800px;height:500px;"></div>
+    <script>
+        var myChart = echarts.init(document.getElementById('chart'));
+
+        var option = {
+            title: {
+                text: 'Temperature与余弦相似度关系',
+                subtext: '数据对比分析',
+                left: 'center'
+            },
+            tooltip: {
+                trigger: 'axis',
+                axisPointer: {
+                    type: 'shadow'
+                }
+            },
+            xAxis: {
+                type: 'category',
+                data: ['0.2', '0.4', '0.6', '0.8', '1.0', '1.2', '1.4', '1.6', '1.8', '2.0'],
+                axisTick: {
+                    alignWithLabel: true
+                },
+                axisLabel: {
+                    textStyle: {
+                        fontSize: 12
+                    }
+                }
+            },
+            yAxis: {
+                type: 'value',
+                name: '余弦相似度',
+                min: 0.53,  // 设置Y轴最小值便于观察波动
+                max: 0.55,
+                axisLine: {
+                    lineStyle: {
+                        color: '#666'
+                    }
+                },
+                splitLine: {
+                    lineStyle: {
+                        type: 'dashed'
+                    }
+                }
+            },
+            series: [{
+                name: '余弦相似度',
+                type: 'bar',
+                barWidth: '30%',  // 柱子宽度
+                data: [0.5367, 0.5428, 0.5410, 0.5403, 0.5453, 0.5427, 0.5445, 0.5383, 0.5325, 0.5324],
+                itemStyle: {
+                    normal: {
+                        color: '#409EFF',  // 柱子颜色
+                        label: {
+                            show: true,
+                            position: 'top',
+                            textStyle: {
+                                color: '#333',
+                                fontSize: 12
+                            }
+                        }
+                    }
+                }
+            }]
+        };
+
+        myChart.setOption(option);
+    </script>
+</body>
+</html>

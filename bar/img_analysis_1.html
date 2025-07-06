@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>模型推理准确性对比（升序排列）</title>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; padding: 20px; background-color: #f5f7fa; }
+        .chart-container { width: 100%; max-width: 1200px; margin: 0 auto; background: white; border-radius: 8px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); padding: 20px; }
+        #main { width: 100%; height: 500px; }
+        .title { text-align: center; color: #333; margin-bottom: 20px; }
+    </style>
+</head>
+<body>
+    <div class="chart-container">
+        <h2 class="title">模型推理准确性对比</h2>
+        <div id="main"></div>
+    </div>
+
+    <script>
+        const myChart = echarts.init(document.getElementById('main'));
+
+        // 排序后的数据（升序）
+        const sortedData = [
+            { name: 'doubao-1-5-thinking-pro-m-250428(no-thinking)', value: 3 },
+            { name: 'doubao-1.5-vision-pro-250328(no-thinking)', value: 3 },
+            { name: 'doubao-1.5-vision-pro-250328(thinking)', value: 3 },
+            { name: 'doubao-1-5-thinking-pro-m-250428(thinking)', value: 5 },
+            { name: 'doubao-1-5-thinking-vision-pro-250428(thinking)', value: 9 },
+            { name: 'doubao-1-5-thinking-vision-pro-250428(no-thinking)', value: 10 }
+        ].sort((a, b) => a.value - b.value); // 升序排序
+
+        const option = {
+            tooltip: {
+                trigger: 'axis',
+                axisPointer: { type: 'shadow' },
+                backgroundColor: 'rgba(255,255,255,0.9)',
+                textStyle: { color: '#333' },
+                formatter: params => `<div style="font-weight:bold;">${params[0].name}</div><div>准确性: ${params[0].value}</div>`
+            },
+            grid: { left: '8%', right: '4%', bottom: '5%', top: '5%', containLabel: true },
+            xAxis: {
+                type: 'value',
+                axisLabel: { color: '#666' },
+                axisLine: { lineStyle: { color: '#ccc' } },
+                splitLine: { lineStyle: { color: '#eee' } }
+            },
+            yAxis: {
+                type: 'category',
+                data: sortedData.map(item => item.name), // 排序后的标签
+                axisLabel: {
+                    textStyle: { color: '#666', fontSize: 11 },
+                    formatter: value => value // 保持英文标签不变
+                },
+                axisLine: { lineStyle: { color: '#ccc' } },
+                splitLine: { show: false },
+                inverse: false, // 保持默认顺序，最低的在顶部
+            },
+            series: [
+                {
+                    name: '推理准确性',
+                    type: 'bar',
+                    data: sortedData.map(item => item.value), // 排序后的值
+                    itemStyle: {
+                        normal: {
+                            color: params => params.value >= 8 ? '#52c41a' : params.value >= 5 ? '#faad14' : '#ff4d4f', // 颜色映射
+                            borderRadius: 4,
+                            shadowBlur: 8,
+                            shadowColor: 'rgba(0,0,0,0.08)'
+                        }
+                    },
+                    label: {
+                        show: true,
+                        position: 'right',
+                        color: '#333',
+                        fontSize: 12,
+                        formatter: '{c}' // 直接显示数值
+                    },
+                    barWidth: 30,
+                    animationDuration: 1200,
+                    animationEasing: 'cubicInOut'
+                }
+            ],
+            animation: true
+        };
+
+        myChart.setOption(option);
+        window.addEventListener('resize', () => myChart.resize());
+    </script>
+</body>
+</html>
+    

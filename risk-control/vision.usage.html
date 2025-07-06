@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>信贷风控体系嵌套饼图</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#165DFF',
+                        secondary: '#0FC6C2',
+                        success: '#00B42A',
+                        warning: '#FF7D00',
+                        danger: '#F53F3F',
+                        info: '#86909C',
+                        light: '#F2F3F5',
+                        dark: '#1D2129',
+                    },
+                    fontFamily: {
+                        inter: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .content-auto {
+                content-visibility: auto;
+            }
+            .card-shadow {
+                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            }
+            .hover-lift {
+                transition: transform 0.3s ease, box-shadow 0.3s ease;
+            }
+            .hover-lift:hover {
+                transform: translateY(-4px);
+                box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 font-inter text-dark">
+    <div class="min-h-screen flex flex-col">
+        <!-- 导航栏 -->
+        <header class="bg-white shadow-sm sticky top-0 z-50">
+            <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+                <div class="flex items-center space-x-2">
+                    <i class="fa fa-pie-chart text-primary text-2xl"></i>
+                    <h1 class="text-xl font-bold text-primary">信贷风控体系</h1>
+                </div>
+                <nav class="hidden md:flex space-x-6">
+                    <a href="#" class="text-gray-700 hover:text-primary transition-colors duration-200 font-medium">首页</a>
+                    <a href="#" class="text-primary font-medium border-b-2 border-primary pb-1">风控分析</a>
+                    <a href="#" class="text-gray-700 hover:text-primary transition-colors duration-200 font-medium">数据报表</a>
+                    <a href="#" class="text-gray-700 hover:text-primary transition-colors duration-200 font-medium">系统设置</a>
+                </nav>
+                <button class="md:hidden text-gray-700 focus:outline-none">
+                    <i class="fa fa-bars text-xl"></i>
+                </button>
+            </div>
+        </header>
+
+        <!-- 主要内容区 -->
+        <main class="flex-grow container mx-auto px-4 py-8">
+            <!-- 页面标题 -->
+            <div class="text-center mb-10">
+                <h2 class="text-[clamp(1.8rem,4vw,2.5rem)] font-bold text-gray-800 mb-3">信贷风控体系嵌套饼图分析</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">通过多层饼图可视化展示视觉风控场景全流程的风险控制环节及其相互关系，帮助您全面理解风控体系的层次结构。</p>
+            </div>
+
+            <!-- 嵌套饼图区域 -->
+            <div class="bg-white rounded-xl shadow-md p-6 mb-10">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
+                    <h3 class="text-xl font-semibold text-gray-800">风控体系结构分析</h3>
+                    <div class="flex space-x-2 mt-3 md:mt-0">
+                        <button id="zoomIn" class="bg-primary/10 hover:bg-primary/20 text-primary px-3 py-1 rounded-md transition-colors duration-200">
+                            <i class="fa fa-search-plus mr-1"></i> 放大
+                        </button>
+                        <button id="zoomOut" class="bg-primary/10 hover:bg-primary/20 text-primary px-3 py-1 rounded-md transition-colors duration-200">
+                            <i class="fa fa-search-minus mr-1"></i> 缩小
+                        </button>
+                        <button id="resetView" class="bg-primary/10 hover:bg-primary/20 text-primary px-3 py-1 rounded-md transition-colors duration-200">
+                            <i class="fa fa-refresh mr-1"></i> 重置
+                        </button>
+                    </div>
+                </div>
+                <div class="h-[600px]" id="nestedPie"></div>
+            </div>
+
+            <!-- 指标卡片 -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+                <div class="bg-white rounded-xl shadow-md p-6 hover-lift">
+                    <div class="flex justify-between items-start mb-4">
+                        <div>
+                            <p class="text-gray-500 text-sm">风控覆盖率</p>
+                            <h4 class="text-3xl font-bold mt-1 text-primary">98.7%</h4>
+                        </div>
+                        <div class="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center text-primary">
+                            <i class="fa fa-shield text-xl"></i>
+                        </div>
+                    </div>
+                    <div class="flex items-center text-success text-sm">
+                        <i class="fa fa-arrow-up mr-1"></i>
+                        <span>较上月提升 1.2%</span>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-xl shadow-md p-6 hover-lift">
+                    <div class="flex justify-between items-start mb-4">
+                        <div>
+                            <p class="text-gray-500 text-sm">风险识别准确率</p>
+                            <h4 class="text-3xl font-bold mt-1 text-warning">92.4%</h4>
+                        </div>
+                        <div class="h-12 w-12 rounded-full bg-warning/10 flex items-center justify-center text-warning">
+                            <i class="fa fa-exclamation-triangle text-xl"></i>
+                        </div>
+                    </div>
+                    <div class="flex items-center text-success text-sm">
+                        <i class="fa fa-arrow-up mr-1"></i>
+                        <span>较上月提升 3.5%</span>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-xl shadow-md p-6 hover-lift">
+                    <div class="flex justify-between items-start mb-4">
+                        <div>
+                            <p class="text-gray-500 text-sm">违约率</p>
+                            <h4 class="text-3xl font-bold mt-1 text-danger">3.2%</h4>
+                        </div>
+                        <div class="h-12 w-12 rounded-full bg-danger/10 flex items-center justify-center text-danger">
+                            <i class="fa fa-times-circle text-xl"></i>
+                        </div>
+                    </div>
+                    <div class="flex items-center text-success text-sm">
+                        <i class="fa fa-arrow-down mr-1"></i>
+                        <span>较上月下降 0.8%</span>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-xl shadow-md p-6 hover-lift">
+                    <div class="flex justify-between items-start mb-4">
+                        <div>
+                            <p class="text-gray-500 text-sm">回收率</p>
+                            <h4 class="text-3xl font-bold mt-1 text-success">87.6%</h4>
+                        </div>
+                        <div class="h-12 w-12 rounded-full bg-success/10 flex items-center justify-center text-success">
+                            <i class="fa fa-refresh text-xl"></i>
+                        </div>
+                    </div>
+                    <div class="flex items-center text-danger text-sm">
+                        <i class="fa fa-arrow-down mr-1"></i>
+                        <span>较上月下降 1.3%</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 风控环节详情 -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-white rounded-xl shadow-md p-6 border-t-4 border-primary hover-lift">
+                    <div class="flex items-center mb-4">
+                        <div class="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center text-primary mr-3">
+                            <i class="fa fa-user-circle-o text-xl"></i>
+                        </div>
+                        <h3 class="text-lg font-semibold">贷前</h3>
+                    </div>
+                    <p class="text-gray-600 mb-4">贷前阶段是风险控制的基础，通过多重验证和评估机制，有效筛选优质客户，降低潜在风险。</p>
+                    <ul class="space-y-2">
+                        <li class="flex items-start">
+                            <i class="fa fa-check-circle text-primary mt-1 mr-2"></i>
+                            <span>身份验证增强：多维度身份验证，包括生物识别技术</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fa fa-check-circle text-primary mt-1 mr-2"></i>
+                            <span>实时风险评估：基于大数据的风险评分模型</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fa fa-check-circle text-primary mt-1 mr-2"></i>
+                            <span>欺诈风险识别：AI驱动的反欺诈系统</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="bg-white rounded-xl shadow-md p-6 border-t-4 border-warning hover-lift">
+                    <div class="flex items-center mb-4">
+                        <div class="h-10 w-10 rounded-full bg-warning/10 flex items-center justify-center text-warning mr-3">
+                            <i class="fa fa-credit-card text-xl"></i>
+                        </div>
+                        <h3 class="text-lg font-semibold">贷中</h3>
+                    </div>
+                    <p class="text-gray-600 mb-4">贷中阶段通过动态监控和策略调整，确保客户信用状况稳定，及时发现并处理潜在风险。</p>
+                    <ul class="space-y-2">
+                        <li class="flex items-start">
+                            <i class="fa fa-check-circle text-warning mt-1 mr-2"></i>
+                            <span>信用评估补充：持续更新客户信用档案</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fa fa-check-circle text-warning mt-1 mr-2"></i>
+                            <span>额度调整依据：实时动态额度管理</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fa fa-check-circle text-warning mt-1 mr-2"></i>
+                            <span>客户分层管理：差异化服务策略</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="bg-white rounded-xl shadow-md p-6 border-t-4 border-danger hover-lift">
+                    <div class="flex items-center mb-4">
+                        <div class="h-10 w-10 rounded-full bg-danger/10 flex items-center justify-center text-danger mr-3">
+                            <i class="fa fa-calendar-check-o text-xl"></i>
+                        </div>
+                        <h3 class="text-lg font-semibold">贷后</h3>
+                    </div>
+                    <p class="text-gray-600 mb-4">贷后阶段重点关注还款情况和风险预警，通过科学的催收策略和异常行为监测，最大限度减少损失。</p>
+                    <ul class="space-y-2">
+                        <li class="flex items-start">
+                            <i class="fa fa-check-circle text-danger mt-1 mr-2"></i>
+                            <span>风险预警：多维度风险指标实时监控</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fa fa-check-circle text-danger mt-1 mr-2"></i>
+                            <span>催收策略优化：AI驱动的智能催收系统</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fa fa-check-circle text-danger mt-1 mr-2"></i>
+                            <span>异常行为监测：实时捕捉客户异常行为</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </main>
+
+        <!-- 页脚 -->
+        <footer class="bg-gray-800 text-white py-10 mt-10">
+            <div class="container mx-auto px-4">
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                    <div>
+                        <h3 class="text-lg font-semibold mb-4">信贷风控系统</h3>
+                        <p class="text-gray-400 text-sm">全面覆盖贷前、贷中、贷后全流程的智能风控解决方案，帮助金融机构有效识别、评估和控制风险。</p>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-semibold mb-4">功能模块</h3>
+                        <ul class="space-y-2 text-gray-400">
+                            <li><a href="#" class="hover:text-white transition-colors duration-200">风险评估</a></li>
+                            <li><a href="#" class="hover:text-white transition-colors duration-200">欺诈检测</a></li>
+                            <li><a href="#" class="hover:text-white transition-colors duration-200">智能催收</a></li>
+                            <li><a href="#" class="hover:text-white transition-colors duration-200">数据分析</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-semibold mb-4">技术支持</h3>
+                        <ul class="space-y-2 text-gray-400">
+                            <li><a href="#" class="hover:text-white transition-colors duration-200">API文档</a></li>
+                            <li><a href="#" class="hover:text-white transition-colors duration-200">开发指南</a></li>
+                            <li><a href="#" class="hover:text-white transition-colors duration-200">常见问题</a></li>
+                            <li><a href="#" class="hover:text-white transition-colors duration-200">联系我们</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-semibold mb-4">关注我们</h3>
+                        <div class="flex space-x-4">
+                            <a href="#" class="h-10 w-10 rounded-full bg-gray-700 flex items-center justify-center hover:bg-primary transition-colors duration-200">
+                                <i class="fa fa-weixin"></i>
+                            </a>
+                            <a href="#" class="h-10 w-10 rounded-full bg-gray-700 flex items-center justify-center hover:bg-primary transition-colors duration-200">
+                                <i class="fa fa-weibo"></i>
+                            </a>
+                            <a href="#" class="h-10 w-10 rounded-full bg-gray-700 flex items-center justify-center hover:bg-primary transition-colors duration-200">
+                                <i class="fa fa-linkedin"></i>
+                            </a>
+                        </div>
+                        <p class="text-gray-400 text-sm mt-4">客服热线：400-123-4567</p>
+                        <p class="text-gray-400 text-sm">工作时间：周一至周五 9:00-18:00</p>
+                    </div>
+                </div>
+                <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400 text-sm">
+                    <p>© 2025 信贷风控系统 版权所有 | 京ICP备12345678号</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // 初始化嵌套饼图
+        document.addEventListener('DOMContentLoaded', function() {
+            // 定义饼图数据
+            const data = [{
+                type: 'sunburst',
+                labels: [
+                    '视觉风控场景', 
+                    '贷前', '贷中', '贷后', 
+                    '身份验证增强', '实时风险评估', '欺诈风险识别',
+                    '信用评估补充', '额度调整依据', '客户分层管理',
+                    '风险预警', '催收策略优化', '异常行为监测'
+                ],
+                parents: [
+                    '', 
+                    '视觉风控场景', '视觉风控场景', '视觉风控场景', 
+                    '贷前', '贷前', '贷前',
+                    '贷中', '贷中', '贷中',
+                    '贷后', '贷后', '贷后'
+                ],
+                values: [
+                    100, 
+                    35, 35, 30, 
+                    12, 12, 11,
+                    10, 12, 13,
+                    9, 10, 11
+                ],
+                branchvalues: 'total',
+                marker: {
+                    colors: [
+                        '#00B42A', // 将"视觉风控场景"的背景颜色改为绿色
+                        '#165DFF', '#FF7D00', '#F53F3F', 
+                        '#367DFF', '#569DFF', '#76BDFF',
+                        '#FF9D30', '#FFBD60', '#FFDD90',
+                        '#F76060', '#F98080', '#FBA0A0'
+                    ],
+                    line: {
+                        width: 2,
+                        color: '#ffffff'
+                    }
+                },
+                hovertemplate: '%{label}<br>占比: %{value}%<extra></extra>',
+                textfont: {
+                    size: 12,
+                    // 为每个标签单独设置颜色，第一个标签为 "视觉风控场景"
+                    color: [
+                        'white',
+                        'black', 'black', 'black', 
+                        'black', 'black', 'black',
+                        'black', 'black', 'black',
+                        'black', 'black', 'black'
+                    ]
+                }
+            }];
+
+            // 配置图表布局
+            const layout = {
+                margin: { t: 0, l: 0, r: 0, b: 0 },
+                height: 600,
+                width: document.getElementById('nestedPie').offsetWidth,
+                paper_bgcolor: 'rgba(0,0,0,0)',
+                plot_bgcolor: 'rgba(0,0,0,0)'
+            };
+
+            // 创建图表
+            Plotly.newPlot('nestedPie', data, layout, {
+                responsive: true,
+                displayModeBar: true,
+                modeBarButtonsToRemove: ['lasso2d', 'select2d']
+            });
+
+            // 添加交互按钮功能
+            document.getElementById('zoomIn').addEventListener('click', function() {
+                Plotly.relayout('nestedPie', {
+                    'sunburstcenter.x': 0.5,
+                    'sunburstcenter.y': 0.5,
+                    'sunburstsize': 0.8
+                });
+            });
+
+            document.getElementById('zoomOut').addEventListener('click', function() {
+                Plotly.relayout('nestedPie', {
+                    'sunburstcenter.x': 0.5,
+                    'sunburstcenter.y': 0.5,
+                    'sunburstsize': 0.6
+                });
+            });
+
+            document.getElementById('resetView').addEventListener('click', function() {
+                Plotly.relayout('nestedPie', {
+                    'sunburstcenter.x': 0.5,
+                    'sunburstcenter.y': 0.5,
+                    'sunburstsize': 0.7
+                });
+            });
+
+            // 响应窗口大小变化
+            window.addEventListener('resize', function() {
+                Plotly.relayout('nestedPie', {
+                    width: document.getElementById('nestedPie').offsetWidth
+                });
+            });
+        });
+    </script>
+</body>
+</html>    

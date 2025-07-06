@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>大模型赋能下的"一个人公司"可视化分析</title>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+    <style>
+        body {
+            font-family: "Microsoft YaHei", "Noto Sans CJK JP", sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1, h2, h3 {
+            color: #333;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .chart-container {
+            width: 100%;
+            height: 500px;
+            margin-bottom: 40px;
+        }
+        .chart-row {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        .chart-half {
+            width: 48%;
+            height: 400px;
+            margin-bottom: 20px;
+        }
+        .description {
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+        .source {
+            font-size: 12px;
+            color: #666;
+            margin-top: 5px;
+        }
+        @media (max-width: 768px) {
+            .chart-half {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>大模型赋能下的"一个人公司"可视化分析</h1>
+        
+        <div class="description">
+            <p>本可视化报告基于对大模型赋能下"一个人公司"的研究，通过多个图表直观展示了"一个人公司"的特征、大模型赋能方式、市场趋势以及面临的挑战与机遇。</p>
+        </div>
+
+        <h2>1. "一个人公司"的特征分析</h2>
+        <div class="chart-container" id="company-features"></div>
+        <div class="source">数据来源：基于研究报告整理</div>
+
+        <h2>2. 大模型赋能"一个人公司"的方式</h2>
+        <div class="chart-container" id="ai-empowerment"></div>
+        <div class="source">数据来源：基于研究报告整理</div>
+
+        <h2>3. 小微创业者市场趋势</h2>
+        <div class="chart-row">
+            <div class="chart-half" id="market-trend-1"></div>
+            <div class="chart-half" id="market-trend-2"></div>
+        </div>
+        <div class="source">数据来源：研究报告中的市场数据</div>
+
+        <h2>4. "一个人公司"面临的挑战与机遇</h2>
+        <div class="chart-container" id="challenges-opportunities"></div>
+        <div class="source">数据来源：基于研究报告整理</div>
+
+        <h2>5. 大模型赋能下"一个人公司"的发展路径</h2>
+        <div class="chart-container" id="development-path"></div>
+        <div class="source">数据来源：基于研究报告分析</div>
+    </div>
+
+    <script>
+        function initChart() {
+            // 初始化所有图表
+            initCompanyFeaturesChart();
+            initAIEmpowermentChart();
+            initMarketTrendChart1();
+            initMarketTrendChart2();
+            initChallengesOpportunitiesChart();
+            initDevelopmentPathChart();
+            
+            // 窗口大小变化时重新调整图表大小
+            window.addEventListener('resize', function() {
+                echarts.getInstanceByDom(document.getElementById('company-features')).resize();
+                echarts.getInstanceByDom(document.getElementById('ai-empowerment')).resize();
+                echarts.getInstanceByDom(document.getElementById('market-trend-1')).resize();
+                echarts.getInstanceByDom(document.getElementById('market-trend-2')).resize();
+                echarts.getInstanceByDom(document.getElementById('challenges-opportunities')).resize();
+                echarts.getInstanceByDom(document.getElementById('development-path')).resize();
+            });
+        }
+
+        // 图表1：一个人公司的特征分析
+        function initCompanyFeaturesChart() {
+            const chartDom = document.getElementById('company-features');
+            const myChart = echarts.init(chartDom);
+            
+            const option = {
+                title: {
+                    text: '"一个人公司"的核心特征',
+                    left: 'center',
+                    textStyle: {
+                        fontSize: 18
+                    }
+                },
+                tooltip: {
+                    trigger: 'item',
+                    formatter: '{b}: {c}'
+                },
+                legend: {
+                    top: '10%',
+                    orient: 'vertical',
+                    right: 10
+                },
+                series: [
+                    {
+                        name: '一个人公司特征',
+                        type: 'pie',
+                        radius: ['40%', '70%'],
+                        center: ['50%', '60%'],
+                        avoidLabelOverlap: false,
+                        itemStyle: {
+                            borderRadius: 10,
+                            borderColor: '#fff',
+                            borderWidth: 2
+                        },
+                        label: {
+                            show: true,
+                            formatter: '{b}\n{d}%'
+                        },
+                        emphasis: {
+                            label: {
+                                show: true,
+                                fontSize: 16,
+                                fontWeight: 'bold'
+                            }
+                        },
+                        data: [
+                            { value: 25, name: '股东唯一性' },
+                            { value: 20, name: '决策效率高' },
+                            { value: 15, name: '绝对控制权' },
+                            { value: 15, name: '有限责任原则' },
+                            { value: 10, name: '资产混同风险' },
+                            { value: 10, name: '外部信任度较低' },
+                            { value: 5, name: '缺乏内部制衡' }
+                        ]
+                    }
+                ]
+            };
+            
+            myChart.setOption(option);
+        }
+
+        // 图表2：大模型赋能"一个人公司"的方式
+        function initAIEmpowermentChart() {
+            const chartDom = document.getElementById('ai-empowerment');
+            const myChart = echarts.init(chartDom);
+            
+            const option = {
+                title: {
+                    text: '大模型赋能"一个人公司"的方式',
+                    left: 'center',
+                    textStyle: {
+                        fontSize: 18
+                    }
+                },
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {
+                        type: 'shadow'
+                    }
+                },
+                legend: {
+                    top: '10%'
+                },
+                grid: {
+                    left: '3%',
+                    right: '4%',
+                    bottom: '3%',
+                    containLabel: true
+                },
+                xAxis: {
+                    type: 'value',
+                    boundaryGap: [0, 0.01],
+                    axisLabel: {
+                        formatter: '{value}%'
+                    }
+                },
+                yAxis: {
+                    type: 'category',
+                    data: ['软件开发', '设计与内容创作', '市场营销与运营', '管理与协作', '产品化进程', '新商业模式']
+                },
+                series: [
+                    {
+                        name: '效率提升',
+                        type: 'bar',
+                        data: [70, 80, 65, 50, 75, 60]
+                    },
+                    {
+                        name: '成本降低',
+                        type: 'bar',
+                        data: [65, 75, 60, 45, 55, 50]
+                    }
+                ]
+            };
+            
+            myChart.setOption(option);
+        }
+
+        // 图表3：小微创业者增长趋势
+        function initMarketTrendChart1() {
+            const chartDom = document.getElementById('market-trend-1');
+            const myChart = echarts.init(chartDom);
+            
+            const option = {
+                title: {
+                    text: '小微创业者增长趋势',
+                    left: 'center',
+                    textStyle: {
+                        fontSize: 16
+                    }
+                },
+                tooltip: {
+                    trigger: 'axis'
+                },
+                xAxis: {
+                    type: 'category',
+                    data: ['2021', '2022', '2023', '2024', '2025(预测)']
+                },
+                yAxis: {
+                    type: 'value',
+                    axisLabel: {
+                        formatter: '{value}%'
+                    }
+                },
+                series: [
+                    {
+                        data: [100, 105, 112, 118, 123],
+                        type: 'line',
+                        smooth: true,
+                        lineStyle: {
+                            width: 3
+                        },
+                        markPoint: {
+                            data: [
+                                { type: 'max', name: '最大值' }
+                            ]
+                        }
+                    }
+                ]
+            };
+            
+            myChart.setOption(option);
+        }
+
+        // 图表4：创业启动资金变化
+        function initMarketTrendChart2() {
+            const chartDom = document.getElementById('market-trend-2');
+            const myChart = echarts.init(chartDom);
+            
+            const option = {
+                title: {
+                    text: '创业启动资金变化趋势',
+                    left: 'center',
+                    textStyle: {
+                        fontSize: 16
+                    }
+                },
+                tooltip: {
+                    trigger: 'axis'
+                },
+                xAxis: {
+                    type: 'category',
+                    data: ['2021', '2022', '2023', '2024', '2025(预测)']
+                },
+                yAxis: {
+                    type: 'value',
+                    axisLabel: {
+                        formatter: '{value}万元'
+                    }
+                },
+                series: [
+                    {
+                        data: [10, 8, 7, 6.5, 6],
+                        type: 'line',
+                        smooth: true,
+                        lineStyle: {
+                            width: 3,
+                            color: '#FF6B6B'
+                        },
+                        markPoint: {
+                            data: [
+                                { type: 'min', name: '最小值' }
+                            ]
+                        }
+                    }
+                ]
+            };
+            
+            myChart.setOption(option);
+        }
+
+        // 图表5：一个人公司面临的挑战与机遇
+        function initChallengesOpportunitiesChart() {
+            const chartDom = document.getElementById('challenges-opportunities');
+            const myChart = echarts.init(chartDom);
+            
+            const option = {
+                title: {
+                    text: '"一个人公司"面临的挑战与机遇',
+                    left: 'center',
+                    textStyle: {
+                        fontSize: 18
+                    }
+                },
+                tooltip: {
+                    trigger: 'item'
+                },
+                legend: {
+                    top: '10%'
+                },
+                radar: {
+                    indicator: [
+                        { name: '法律风险', max: 100 },
+                        { name: '财务风险', max: 100 },
+                        { name: '技术门槛', max: 100 },
+                        { name: 'AI成本', max: 100 },
+                        { name: '市场竞争', max: 100 },
+                        { name: '发展潜力', max: 100 }
+                    ]
+                },
+                series: [
+                    {
+                        name: '挑战与机遇',
+                        type: 'radar',
+                        data: [
+                            {
+                                value: [80, 75, 60, 65, 85, 40],
+                                name: '挑战',
+                                areaStyle: {
+                                    color: 'rgba(255, 107, 107, 0.6)'
+                                }
+                            },
+                            {
+                                value: [40, 45, 75, 70, 60, 90],
+                                name: '机遇',
+                                areaStyle: {
+                                    color: 'rgba(75, 192, 192, 0.6)'
+                                }
+                            }
+                        ]
+                    }
+                ]
+            };
+            
+            myChart.setOption(option);
+        }
+
+        // 图表6：大模型赋能下"一个人公司"的发展路径
+        function initDevelopmentPathChart() {
+            const chartDom = document.getElementById('development-path');
+            const myChart = echarts.init(chartDom);
+            
+            const option = {
+                title: {
+                    text: '大模型赋能下"一个人公司"的发展路径',
+                    left: 'center',
+                    textStyle: {
+                        fontSize: 18
+                    }
+                },
+                tooltip: {
+                    trigger: 'item',
+                    formatter: '{a} <br/>{b} : {c}'
+                },
+                series: [
+                    {
+                        name: '发展路径',
+                        type: 'graph',
+                        layout: 'force',
+                        force: {
+                            repulsion: 1000,
+                            edgeLength: 120
+                        },
+                        roam: true,
+                        label: {
+                            show: true,
+                            position: 'right',
+                            formatter: '{b}'
+                        },
+                        data: [
+                            {
+                                name: '一个人公司',
+                                symbolSize: 70,
+                                itemStyle: {
+                                    color: '#4BC0C0'
+                                }
+                            },
+                            {
+                                name: '深度数字化',
+                                symbolSize: 50,
+                                itemStyle: {
+                                    color: '#FF6B6B'
+                                }
+                            },
+                            {
+                                name: '专业化服务',
+                                symbolSize: 50,
+                                itemStyle: {
+                                    color: '#FF6B6B'
+                                }
+                            },
+                            {
+                                name: '品牌化运营',
+                                symbolSize: 50,
+                                itemStyle: {
+                                    color: '#FF6B6B'
+                                }
+                            },
+                            {
+                                name: '轻资产模式',
+                                symbolSize: 50,
+                                itemStyle: {
+                                    color: '#FF6B6B'
+                                }
+                            },
+                            {
+                                name: 'AI创意服务',
+                                symbolSize: 50,
+                                itemStyle: {
+                                    color: '#FF6B6B'
+                                }
+                            },
+                            {
+                                name: '多元化经营',
+                                symbolSize: 50,
+                                itemStyle: {
+                                    color: '#FF6B6B'
+                                }
+                            },
+                            {
+                                name: '政策扶持',
+                                symbolSize: 50,
+                                itemStyle: {
+                                    color: '#FFCE56'
+                                }
+                            }
+                        ],
+                        links: [
+                            {
+                                source: '一个人公司',
+                                target: '深度数字化',
+                                value: '数字化转型',
+                                lineStyle: {
+                                    width: 3
+                                }
+                            },
+                            {
+                                source: '一个人公司',
+                                target: '专业化服务',
+                                value: '聚焦专业领域',
+                                lineStyle: {
+                                    width: 3
+                                }
+                            },
+                            {
+                                source: '一个人公司',
+                                target: '品牌化运营',
+                                value: '塑造个人品牌',
+                                lineStyle: {
+                                    width: 3
+                                }
+                            },
+                            {
+                                source: '一个人公司',
+                                target: '轻资产模式',
+                                value: '降低运营成本',
+                                lineStyle: {
+                                    width: 3
+                                }
+                            },
+                            {
+                                source: '一个人公司',
+                                target: 'AI创意服务',
+                                value: '提供AI增值服务',
+                                lineStyle: {
+                                    width: 3
+                                }
+                            },
+                            {
+                                source: '一个人公司',
+                                target: '多元化经营',
+                                value: '分散经营风险',
+                                lineStyle: {
+                                    width: 3
+                                }
+                            },
+                            {
+                                source: '政策扶持',
+                                target: '一个人公司',
+                                value: '外部支持',
+                                lineStyle: {
+                                    width: 3,
+                                    color: '#FFCE56'
+                                }
+                            }
+                        ],
+                        lineStyle: {
+                            color: 'source',
+                            curveness: 0.3
+                        }
+                    }
+                ]
+            };
+            
+            myChart.setOption(option);
+        }
+
+        // 初始化所有图表
+        window.onload = initChart;
+    </script>
+</body>
+</html>

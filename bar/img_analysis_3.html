@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>模型推理连续性对比（升序排列）</title>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; padding: 20px; background-color: #f5f7fa; }
+        .chart-container { width: 100%; max-width: 1200px; margin: 0 auto; background: white; border-radius: 8px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); padding: 20px; }
+        #main { width: 100%; height: 500px; }
+        .title { text-align: center; color: '#333'; margin-bottom: 20px; }
+    </style>
+</head>
+<body>
+    <div class="chart-container">
+        <h2 class="title">模型推理连续性对比</h2>
+        <div id="main"></div>
+    </div>
+
+    <script>
+        const myChart = echarts.init(document.getElementById('main'));
+
+        // 推理连续性数据（升序排列）
+        const sortedData = [
+            { name: 'doubao-1-5-thinking-pro-m-250428(no-thinking)', value: 4 },
+            { name: 'doubao-1.5-vision-pro-250328(no-thinking)', value: 4 },
+            { name: 'doubao-1.5-vision-pro-250328(thinking)', value: 6 },
+            { name: 'doubao-1-5-thinking-pro-m-250428(thinking)', value: 6 },
+            { name: 'doubao-1-5-thinking-vision-pro-250428(no-thinking)', value: 8 },
+            { name: 'doubao-1-5-thinking-vision-pro-250428(thinking)', value: 10 }
+        ].sort((a, b) => a.value - b.value); // 升序排序
+
+        const option = {
+            tooltip: {
+                trigger: 'axis',
+                axisPointer: { type: 'shadow' },
+                backgroundColor: 'rgba(255,255,255,0.9)',
+                textStyle: { color: '#333' },
+                formatter: params => `<div style="font-weight:bold;">${params[0].name}</div><div>推理连续性: ${params[0].value}</div>`
+            },
+            grid: { left: '8%', right: '4%', bottom: '5%', top: '5%', containLabel: true },
+            xAxis: {
+                type: 'value',
+                axisLabel: { color: '#666' },
+                axisLine: { lineStyle: { color: '#ccc' } },
+                splitLine: { lineStyle: { color: '#eee' } }
+            },
+            yAxis: {
+                type: 'category',
+                data: sortedData.map(item => item.name),
+                axisLabel: {
+                    textStyle: { color: '#666', fontSize: 11 },
+                    formatter: value => value // 保持原始标签格式
+                },
+                axisLine: { lineStyle: { color: '#ccc' } },
+                splitLine: { show: false }
+            },
+            series: [
+                {
+                    name: '推理连续性',
+                    type: 'bar',
+                    data: sortedData.map(item => item.value),
+                    itemStyle: {
+                        normal: {
+                            // 颜色映射：根据连续性评分调整颜色
+                            color: params => {
+                                const value = params.value;
+                                if (value >= 8) return '#52c41a'; // 绿色 - 高连续性
+                                if (value >= 5) return '#faad14'; // 橙色 - 中等连续性
+                                return '#ff4d4f'; // 红色 - 低连续性
+                            },
+                            borderRadius: 4,
+                            shadowBlur: 8,
+                            shadowColor: 'rgba(0,0,0,0.08)'
+                        }
+                    },
+                    label: {
+                        show: true,
+                        position: 'right',
+                        color: '#333',
+                        fontSize: 12,
+                        formatter: '{c}' // 直接显示数值
+                    },
+                    barWidth: 30,
+                    animationDuration: 1200,
+                    animationEasing: 'cubicInOut'
+                }
+            ],
+            animation: true
+        };
+
+        myChart.setOption(option);
+        window.addEventListener('resize', () => myChart.resize());
+    </script>
+</body>
+</html>
+    

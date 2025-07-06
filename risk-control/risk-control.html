@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>风控技术发展四阶段</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#165DFF',
+                        secondary: '#36CFC9',
+                        accent: '#722ED1',
+                        warning: '#FF7D00',
+                        dark: '#1D2129',
+                        'gray-100': '#F2F3F5',
+                        'gray-200': '#E5E6EB',
+                        'gray-300': '#C9CDD4',
+                        'gray-400': '#86909C',
+                        'gray-500': '#4E5969',
+                    },
+                    fontFamily: {
+                        inter: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                    animation: {
+                        'float': 'float 3s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .stage-card {
+                @apply relative rounded-xl p-6 transition-all duration-500 hover:shadow-lg hover:shadow-primary/20 hover:-translate-y-1;
+            }
+            .stage-line {
+                @apply absolute top-0 left-0 w-full h-1 rounded-full;
+            }
+            .stage-icon {
+                @apply w-16 h-16 flex items-center justify-center rounded-full mb-4 text-white text-2xl font-bold shadow-lg;
+            }
+        }
+    </style>
+</head>
+<body class="font-inter bg-gray-100 min-h-screen flex flex-col">
+    <main class="flex-grow">
+
+        <!-- 阶段介绍 -->
+        <section class="py-16 md:py-24" id="stages">
+            <div class="container mx-auto px-4">
+                <div class="text-center mb-16">
+                    <h2 class="text-[clamp(1.5rem,3vw,2.5rem)] font-bold text-dark mb-4">风控技术四阶段</h2>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                    <!-- 风控1.0 -->
+                    <div class="stage-card bg-white shadow-md" id="stage1">
+                        <div class="stage-line bg-primary"></div>
+                        <div class="stage-icon bg-primary animate-float">1.0</div>
+                        <h3 class="text-xl font-bold text-dark mb-3">初始阶段</h3>
+                        <p class="text-gray-500 mb-4">主要应用于身份验证，如人脸识别、OCR技术等</p>
+                        <div class="space-y-2 mt-6">
+                            <div class="flex items-center">
+                                <div class="w-3 h-3 rounded-full bg-primary mr-2"></div>
+                                <span class="text-gray-600">人脸识别技术</span>
+                            </div>
+                            <div class="flex items-center">
+                                <div class="w-3 h-3 rounded-full bg-primary mr-2"></div>
+                                <span class="text-gray-600">OCR文字识别</span>
+                            </div>
+                            <div class="flex items-center">
+                                <div class="w-3 h-3 rounded-full bg-primary mr-2"></div>
+                                <span class="text-gray-600">基础身份验证</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 风控2.0 -->
+                    <div class="stage-card bg-white shadow-md" id="stage2">
+                        <div class="stage-line bg-secondary"></div>
+                        <div class="stage-icon bg-secondary animate-float" style="animation-delay: 0.2s">2.0</div>
+                        <h3 class="text-xl font-bold text-dark mb-3">发展阶段</h3>
+                        <p class="text-gray-500 mb-4">拓展至欺诈检测，如活体检测、图像篡改识别等</p>
+                        <div class="space-y-2 mt-6">
+                            <div class="flex items-center">
+                                <div class="w-3 h-3 rounded-full bg-secondary mr-2"></div>
+                                <span class="text-gray-600">活体检测技术</span>
+                            </div>
+                            <div class="flex items-center">
+                                <div class="w-3 h-3 rounded-full bg-secondary mr-2"></div>
+                                <span class="text-gray-600">图像篡改识别</span>
+                            </div>
+                            <div class="flex items-center">
+                                <div class="w-3 h-3 rounded-full bg-secondary mr-2"></div>
+                                <span class="text-gray-600">结构化数据分析</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 风控3.0 -->
+                    <div class="stage-card bg-white shadow-md" id="stage3">
+                        <div class="stage-line bg-accent"></div>
+                        <div class="stage-icon bg-accent animate-float" style="animation-delay: 0.4s">3.0</div>
+                        <h3 class="text-xl font-bold text-dark mb-3">成熟阶段</h3>
+                        <p class="text-gray-500 mb-4">实现多维度风险特征提取，如微表情分析、环境特征识别等</p>
+                        <div class="space-y-2 mt-6">
+                            <div class="flex items-center">
+                                <div class="w-3 h-3 rounded-full bg-accent mr-2"></div>
+                                <span class="text-gray-600">微表情分析</span>
+                            </div>
+                            <div class="flex items-center">
+                                <div class="w-3 h-3 rounded-full bg-accent mr-2"></div>
+                                <span class="text-gray-600">环境特征识别</span>
+                            </div>
+                            <div class="flex items-center">
+                                <div class="w-3 h-3 rounded-full bg-accent mr-2"></div>
+                                <span class="text-gray-600">深度学习建模</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 风控4.0 -->
+                    <div class="stage-card bg-white shadow-md" id="stage4">
+                        <div class="stage-line bg-warning"></div>
+                        <div class="stage-icon bg-warning animate-float" style="animation-delay: 0.6s">4.0</div>
+                        <h3 class="text-xl font-bold text-dark mb-3">智能阶段</h3>
+                        <p class="text-gray-500 mb-4">融合大模型技术，实现全面的视觉风控要素提取和风险识别</p>
+                        <div class="space-y-2 mt-6">
+                            <div class="flex items-center">
+                                <div class="w-3 h-3 rounded-full bg-warning mr-2"></div>
+                                <span class="text-gray-600">全面视觉分析</span>
+                            </div>
+                            <div class="flex items-center">
+                                <div class="w-3 h-3 rounded-full bg-warning mr-2"></div>
+                                <span class="text-gray-600">实时风险预警</span>
+                            </div>
+                            <div class="flex items-center">
+                                <div class="w-3 h-3 rounded-full bg-warning mr-2"></div>
+                                <span class="text-gray-600">大模型 + Agent Pipeline</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        // 平滑滚动
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 20,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+    

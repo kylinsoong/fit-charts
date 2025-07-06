@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>模型能力雷达图</title>
+  <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+</head>
+<body>
+  <div id="main" style="width: 1200px;height:600px;"></div>
+  <script>
+    var chart = echarts.init(document.getElementById('main'));
+
+    var option = {
+      title: {
+        text: ''
+      },
+      tooltip: {},
+      legend: {
+        data: [
+          'doubao-vision-pro（no-thinking）',
+          'doubao-vision-pro（thinking）',
+          'doubao-pro-m（no-thinking）',
+          'doubao-pro-m（thinking）',
+          'vision-pro-328（no-thinking）',
+          'vision-pro-328（thinking）'
+        ]
+      },
+      radar: {
+        indicator: [
+          { name: '准确性', max: 5 },
+          { name: '推理时间', max: 5 },
+          { name: '连续性', max: 5 },
+          { name: 'Token总数', max: 5 },
+          { name: '成本', max: 5 }
+        ]
+      },
+      series: [{
+        name: '模型能力对比',
+        type: 'radar',
+        data: [
+          {
+            value: [5,5,4,4,5],
+            name: 'doubao-vision-pro（no-thinking）'
+          },
+          {
+            value: [5,2,5,5,4],
+            name: 'doubao-vision-pro（thinking）'
+          },
+          {
+            value: [4,5,3,5,4],
+            name: 'doubao-pro-m（thinking）'
+          },
+          {
+            value: [3,5,2,4,5],
+            name: 'doubao-pro-m（no-thinking）'
+          },
+          {
+            value: [3,5,2,4,5],
+            name: 'vision-pro-328（no-thinking）'
+          },
+          {
+            value: [3,4,2,4,4],
+            name: 'vision-pro-328（thinking）'
+          }
+        ]
+      }]
+    };
+
+    chart.setOption(option);
+  </script>
+</body>
+</html>
+

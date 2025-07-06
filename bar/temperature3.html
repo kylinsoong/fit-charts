@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Temperature vs Repetition Rate</title>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.0/dist/echarts.min.js"></script>
+</head>
+<body>
+    <div id="chart" style="width: 800px;height:500px;"></div>
+    <script>
+        var myChart = echarts.init(document.getElementById('chart'));
+
+        var option = {
+            title: {
+                text: 'Temperature与重复率关系',
+                subtext: '数据对比分析',
+                left: 'center'
+            },
+            tooltip: {
+                trigger: 'axis',
+                axisPointer: {
+                    type: 'cross',
+                    crossStyle: {
+                        color: '#999'
+                    }
+                }
+            },
+            xAxis: {
+                type: 'category',
+                data: ['0.2', '0.4', '0.6', '0.8', '1.0', '1.2', '1.4', '1.6', '1.8', '2.0'],
+                axisLabel: {
+                    textStyle: {
+                        fontSize: 12
+                    }
+                }
+            },
+            yAxis: {
+                type: 'value',
+                name: '重复率 (%)',
+                min: 10,
+                max: 22,
+                axisLine: {
+                    lineStyle: {
+                        color: '#666'
+                    }
+                },
+                splitLine: {
+                    lineStyle: {
+                        type: 'dashed'
+                    }
+                }
+            },
+            series: [{
+                name: '重复率',
+                type: 'line',
+                data: [19.93, 17.52, 17.07, 15.88, 15.80, 14.75, 14.37, 13.05, 12.80, 11.19],
+                symbol: 'circle',
+                symbolSize: 8,
+                label: {
+                    show: true,
+                    position: 'top',
+                    textStyle: {
+                        color: '#333',
+                        fontSize: 12
+                    }
+                },
+                itemStyle: {
+                    color: '#409EFF'
+                },
+                lineStyle: {
+                    width: 2,
+                    color: '#409EFF'
+                },
+                areaStyle: {
+                    color: {
+                        type: 'linear',
+                        x: 0,
+                        y: 0,
+                        x2: 0,
+                        y2: 1,
+                        colorStops: [{
+                            offset: 0, color: 'rgba(64, 158, 255, 0.4)' // 0% 处的颜色
+                        }, {
+                            offset: 1, color: 'rgba(64, 158, 255, 0)' // 100% 处的颜色
+                        }],
+                        global: false // 缺省为 false
+                    }
+                }
+            }]
+        };
+
+        myChart.setOption(option);
+    </script>
+</body>
+</html>

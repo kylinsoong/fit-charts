@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>风控技术发展四阶段</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#3498db',
+                        secondary: '#2980b9',
+                        dark: '#333333',
+                        medium: '#666666',
+                        light: '#f5f5f5',
+                        // 为各阶段添加专属颜色
+                        phase1: '#3498db', // 蓝色 - 初始阶段
+                        phase2: '#27ae60', // 绿色 - 发展阶段
+                        phase3: '#f39c12', // 橙色 - 成熟阶段
+                        phase4: '#e74c3c', // 红色 - 智能阶段
+                    },
+                    fontFamily: {
+                        sans: ['Arial', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .content-auto {
+                content-visibility: auto;
+            }
+            .phase-icon {
+                @apply w-20 h-20 rounded-full border-2 flex items-center justify-center bg-white shadow-md;
+            }
+            .phase-line {
+                @apply w-0.5 h-24 bg-medium/50;
+            }
+            .timeline-line {
+                @apply h-1 bg-dark w-full;
+            }
+            .timeline-container {
+                @apply relative py-10 px-4 md:px-10;
+            }
+            .phase-card {
+                @apply flex flex-col items-center transition-all duration-500 hover:scale-105;
+            }
+            .phase-title {
+                @apply font-bold text-xl mt-4 mb-1 text-center text-dark;
+            }
+            .phase-subtitle {
+                @apply text-lg text-center font-medium mb-2;
+            }
+            .phase-description {
+                @apply text-sm text-center text-medium;
+            }
+            .section-title {
+                @apply text-2xl md:text-3xl font-bold text-center mb-10 text-dark;
+            }
+            .detail-card {
+                @apply bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 border-t-4 transform hover:-translate-y-1;
+            }
+            .timeline-item {
+                @apply relative flex flex-col items-center md:flex-row md:items-start mb-12;
+            }
+            .timeline-content {
+                @apply md:w-1/2 md:pl-10 md:text-left text-center;
+            }
+            .timeline-icon {
+                @apply md:w-1/2 md:pr-10 flex justify-end md:order-first order-last mt-6 md:mt-0;
+            }
+            .timeline-point {
+                @apply absolute left-0 right-0 mx-auto w-6 h-6 rounded-full border-2 z-10;
+            }
+            .timeline-line-vertical {
+                @apply absolute top-0 bottom-0 left-1/2 w-0.5 bg-medium/30 transform -translate-x-1/2;
+            }
+            .feature-icon {
+                @apply w-8 h-8 rounded-full flex items-center justify-center mr-3;
+            }
+            .stage-icon {
+                @apply w-12 h-12 rounded-full border-2 flex items-center justify-center cursor-pointer transition-all duration-300 hover:scale-110;
+            }
+        }
+    </style>
+</head>
+<body class="bg-light min-h-screen">
+    <div class="container mx-auto px-4 py-12 max-w-6xl">
+        <h1 class="section-title">风控技术发展四阶段</h1>
+        
+        <!-- 时间轴展示 -->
+        <div class="timeline-container relative">
+            <div class="timeline-line-vertical"></div>
+            
+            <!-- 阶段1 -->
+            <div class="timeline-item">
+                <div class="timeline-point bg-phase1 border-phase1" style="top: 0;"></div>
+                <div class="timeline-content">
+                    <div class="phase-title">风控1.0 - 初始阶段</div>
+                    <div class="phase-subtitle text-phase1">身份验证</div>
+                    <p class="phase-description mb-4">主要应用于身份验证，是风控系统的基础阶段，通过基础技术实现用户身份的初步确认。</p>
+                    <ul class="phase-description space-y-3 text-left">
+                        <li class="flex items-start">
+                            <div class="feature-icon bg-phase1/10 text-phase1">
+                                <i class="fa fa-user text-lg"></i>
+                            </div>
+                            <span>基于人脸识别技术进行身份验证</span>
+                        </li>
+                        <li class="flex items-start">
+                            <div class="feature-icon bg-phase1/10 text-phase1">
+                                <i class="fa fa-id-card text-lg"></i>
+                            </div>
+                            <span>OCR技术识别身份证、护照等证件信息</span>
+                        </li>
+                        <li class="flex items-start">
+                            <div class="feature-icon bg-phase1/10 text-phase1">
+                                <i class="fa fa-fingerprint text-lg"></i>
+                            </div>
+                            <span>基础的生物特征识别技术应用</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="timeline-icon">
+                    <div class="phase-icon border-phase1">
+                        <i class="fa fa-id-card-o text-4xl text-phase1"></i>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 阶段2 -->
+            <div class="timeline-item">
+                <div class="timeline-point bg-phase2 border-phase2" style="top: 0;"></div>
+                <div class="timeline-content">
+                    <div class="phase-title">风控2.0 - 发展阶段</div>
+                    <div class="phase-subtitle text-phase2">欺诈检测</div>
+                    <p class="phase-description mb-4">拓展至欺诈检测，提升了风控系统的安全性，通过多种技术手段识别和防范各类欺诈行为。</p>
+                    <ul class="phase-description space-y-3 text-left">
+                        <li class="flex items-start">
+                            <div class="feature-icon bg-phase2/10 text-phase2">
+                                <i class="fa fa-eye text-lg"></i>
+                            </div>
+                            <span>活体检测技术防止照片、视频欺诈</span>
+                        </li>
+                        <li class="flex items-start">
+                            <div class="feature-icon bg-phase2/10 text-phase2">
+                                <i class="fa fa-image text-lg"></i>
+                            </div>
+                            <span>图像篡改识别技术检测证件伪造</span>
+                        </li>
+                        <li class="flex items-start">
+                            <div class="feature-icon bg-phase2/10 text-phase2">
+                                <i class="fa fa-mouse-pointer text-lg"></i>
+                            </div>
+                            <span>行为分析识别异常操作模式</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="timeline-icon">
+                    <div class="phase-icon border-phase2">
+                        <i class="fa fa-shield text-4xl text-phase2"></i>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 阶段3 -->
+            <div class="timeline-item">
+                <div class="timeline-point bg-phase3 border-phase3" style="top: 0;"></div>
+                <div class="timeline-content">
+                    <div class="phase-title">风控3.0 - 成熟阶段</div>
+                    <div class="phase-subtitle text-phase3">多维度风险特征提取</div>
+                    <p class="phase-description mb-4">实现多维度风险特征提取，风控能力全面提升，通过分析多种特征识别潜在风险。</p>
+                    <ul class="phase-description space-y-3 text-left">
+                        <li class="flex items-start">
+                            <div class="feature-icon bg-phase3/10 text-phase3">
+                                <i class="fa fa-smile-o text-lg"></i>
+                            </div>
+                            <span>微表情分析技术识别潜在风险</span>
+                        </li>
+                        <li class="flex items-start">
+                            <div class="feature-icon bg-phase3/10 text-phase3">
+                                <i class="fa fa-map-marker text-lg"></i>
+                            </div>
+                            <span>环境特征识别检测异常登录环境</span>
+                        </li>
+                        <li class="flex items-start">
+                            <div class="feature-icon bg-phase3/10 text-phase3">
+                                <i class="fa fa-sitemap text-lg"></i>
+                            </div>
+                            <span>复杂网络分析技术识别团伙欺诈</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="timeline-icon">
+                    <div class="phase-icon border-phase3">
+                        <i class="fa fa-bar-chart text-4xl text-phase3"></i>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 阶段4 -->
+            <div class="timeline-item">
+                <div class="timeline-point bg-phase4 border-phase4" style="top: 0;"></div>
+                <div class="timeline-content">
+                    <div class="phase-title">风控4.0 - 智能阶段</div>
+                    <div class="phase-subtitle text-phase4">融合大模型技术</div>
+                    <p class="phase-description mb-4">融合大模型技术，实现全面的视觉风控要素提取和风险识别，通过AI技术自动学习和优化风控策略。</p>
+                    <ul class="phase-description space-y-3 text-left">
+                        <li class="flex items-start">
+                            <div class="feature-icon bg-phase4/10 text-phase4">
+                                <i class="fa fa-code-fork text-lg"></i>
+                            </div>
+                            <span>深度学习模型自动提取复杂风险特征</span>
+                        </li>
+                        <li class="flex items-start">
+                            <div class="feature-icon bg-phase4/10 text-phase4">
+                                <i class="fa fa-database text-lg"></i>
+                            </div>
+                            <span>大规模预训练模型提升风险识别准确率</span>
+                        </li>
+                        <li class="flex items-start">
+                            <div class="feature-icon bg-phase4/10 text-phase4">
+                                <i class="fa fa-comments text-lg"></i>
+                            </div>
+                            <span>多模态分析融合视觉、语音、文本等信息</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="timeline-icon">
+                    <div class="phase-icon border-phase4">
+                        <i class="fa fa-brain text-4xl text-phase4"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 阶段对比 -->
+        <div class="mt-16">
+            <h2 class="text-xl font-bold mb-8 text-center">风控技术各阶段对比</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- 阶段1卡片 -->
+                <div class="detail-card border-phase1">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-lg font-bold">风控1.0</h3>
+                        <div class="stage-icon bg-phase1/10 border-phase1 text-phase1">
+                            <i class="fa fa-id-card-o text-xl"></i>
+                        </div>
+                    </div>
+                    <div class="text-phase1 font-medium mb-3">初始阶段</div>
+                    <p class="text-sm text-medium mb-4">主要应用于身份验证，是风控系统的基础阶段。</p>
+                    <div class="space-y-2">
+                        <div class="flex items-center">
+                            <i class="fa fa-check text-green-500 mr-2"></i>
+                            <span class="text-sm">基础身份验证</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fa fa-check text-green-500 mr-2"></i>
+                            <span class="text-sm">人脸识别</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fa fa-check text-green-500 mr-2"></i>
+                            <span class="text-sm">OCR技术</span>
+                        </div>
+                        <div class="flex items-center opacity-50">
+                            <i class="fa fa-times text-red-500 mr-2"></i>
+                            <span class="text-sm">高级欺诈检测</span>
+                        </div>
+                        <div class="flex items-center opacity-50">
+                            <i class="fa fa-times text-red-500 mr-2"></i>
+                            <span class="text-sm">AI模型应用</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 阶段2卡片 -->
+                <div class="detail-card border-phase2">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-lg font-bold">风控2.0</h3>
+                        <div class="stage-icon bg-phase2/10 border-phase2 text-phase2">
+                            <i class="fa fa-shield text-xl"></i>
+                        </div>
+                    </div>
+                    <div class="text-phase2 font-medium mb-3">发展阶段</div>
+                    <p class="text-sm text-medium mb-4">拓展至欺诈检测，提升了风控系统的安全性。</p>
+                    <div class="space-y-2">
+                        <div class="flex items-center">
+                            <i class="fa fa-check text-green-500 mr-2"></i>
+                            <span class="text-sm">基础身份验证</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fa fa-check text-green-500 mr-2"></i>
+                            <span class="text-sm">人脸识别</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fa fa-check text-green-500 mr-2"></i>
+                            <span class="text-sm">OCR技术</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fa fa-check text-green-500 mr-2"></i>
+                            <span class="text-sm">高级欺诈检测</span>
+                        </div>
+                        <div class="flex items-center opacity-50">
+                            <i class="fa fa-times text-red-500 mr-2"></i>
+                            <span class="text-sm">AI模型应用</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 阶段3卡片 -->
+                <div class="detail-card border-phase3">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-lg font-bold">风控3.0</h3>
+                        <div class="stage-icon bg-phase3/10 border-phase3 text-phase3">
+                            <i class="fa fa-bar-chart text-xl"></i>
+                        </div>
+                    </div>
+                    <div class="text-phase3 font-medium mb-3">成熟阶段</div>
+                    <p class="text-sm text-medium mb-4">实现多维度风险特征提取，风控能力全面提升。</p>
+                    <div class="space-y-2">
+                        <div class="flex items-center">
+                            <i class="fa fa-check text-green-500 mr-2"></i>
+                            <span class="text-sm">基础身份验证</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fa fa-check text-green-500 mr-2"></i>
+                            <span class="text-sm">人脸识别</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fa fa-check text-green-500 mr-2"></i>
+                            <span class="text-sm">OCR技术</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fa fa-check text-green-500 mr-2"></i>
+                            <span class="text-sm">高级欺诈检测</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fa fa-check text-green-500 mr-2"></i>
+                            <span class="text-sm">基础AI模型</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 阶段4卡片 -->
+                <div class="detail-card border-phase4">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-lg font-bold">风控4.0</h3>
+                        <div class="stage-icon bg-phase4/10 border-phase4 text-phase4">
+                            <i class="fa fa-brain text-xl"></i>
+                        </div>
+                    </div>
+                    <div class="text-phase4 font-medium mb-3">智能阶段</div>
+                    <p class="text-sm text-medium mb-4">融合大模型技术，实现全面的视觉风控要素提取和风险识别。</p>
+                    <div class="space-y-2">
+                        <div class="flex items-center">
+                            <i class="fa fa-check text-green-500 mr-2"></i>
+                            <span class="text-sm">基础身份验证</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fa fa-check text-green-500 mr-2"></i>
+                            <span class="text-sm">人脸识别</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fa fa-check text-green-500 mr-2"></i>
+                            <span class="text-sm">OCR技术</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fa fa-check text-green-500 mr-2"></i>
+                            <span class="text-sm">高级欺诈检测</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fa fa-check text-green-500 mr-2"></i>
+                            <span class="text-sm">大模型AI应用</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <footer class="bg-dark text-white py-6 mt-16">
+        <div class="container mx-auto px-4 text-center">
+            <p>© 2025 风控技术发展研究中心. 保留所有权利.</p>
+        </div>
+    </footer>
+    
+    <script>
+        // 添加滚动动画
+        document.addEventListener('DOMContentLoaded', () => {
+            const timelineItems = document.querySelectorAll('.timeline-item');
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('opacity-100');
+                        entry.target.classList.remove('opacity-0', 'translate-y-10');
+                    }
+                });
+            }, { threshold: 0.1 });
+            
+            timelineItems.forEach((item, index) => {
+                item.classList.add('opacity-0', 'translate-y-10', 'transition-all', 'duration-700');
+                item.style.transitionDelay = `${index * 200}ms`;
+                observer.observe(item);
+            });
+            
+            // 阶段卡片悬停效果
+            const stageIcons = document.querySelectorAll('.stage-icon');
+            stageIcons.forEach(icon => {
+                icon.addEventListener('mouseenter', () => {
+                    icon.style.transform = 'scale(1.1)';
+                    icon.style.boxShadow = '0 0 10px rgba(0, 0, 0, 0.2)';
+                });
+                icon.addEventListener('mouseleave', () => {
+                    icon.style.transform = 'scale(1)';
+                    icon.style.boxShadow = 'none';
+                });
+            });
+            
+            // 特征图标动画
+            const featureIcons = document.querySelectorAll('.feature-icon');
+            featureIcons.forEach(icon => {
+                icon.addEventListener('mouseenter', () => {
+                    icon.style.animation = 'pulse 1s infinite';
+                });
+                icon.addEventListener('mouseleave', () => {
+                    icon.style.animation = 'none';
+                });
+            });
+        });
+    </script>
+</body>
+</html>    
