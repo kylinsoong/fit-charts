@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>中信戴卡AI大模型项目 - 统一数字图标需求图表</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        business: '#2563eb',
+                        technical: '#dc2626',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .content-auto {
+                content-visibility: auto;
+            }
+            .chart-gradient-business {
+                background: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%);
+            }
+            .chart-gradient-technical {
+                background: linear-gradient(135deg, #dc2626 0%, #ef4444 100%);
+            }
+            .card-hover {
+                transition: transform 0.3s ease, box-shadow 0.3s ease;
+            }
+            .card-hover:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-100 font-sans">
+    <div class="container mx-auto px-4 py-10 max-w-6xl">
+        <!-- 页面标题 -->
+        <header class="text-center mb-12">
+            <h1 class="text-[clamp(1.8rem,4vw,2.8rem)] font-bold text-gray-800 mb-4">中信戴卡AI大模型项目</h1>
+            <h2 class="text-[clamp(1.2rem,3vw,1.8rem)] font-semibold text-gray-600 mb-3">统一数字图标需求图表</h2>
+            <p class="text-gray-500 max-w-3xl mx-auto">业务需求和技术需求图表均采用数字1、2、3作为标识，可分别下载PNG格式用于各类文档和演示。</p>
+        </header>
+
+        <!-- 图表展示区域 -->
+        <div class="grid md:grid-cols-2 gap-8 mb-16">
+            <!-- 业务需求图表 -->
+            <div class="bg-white rounded-xl overflow-hidden card-shadow card-hover">
+                <div class="p-5 border-b border-gray-100 flex justify-between items-center">
+                    <h3 class="text-xl font-bold text-business flex items-center">
+                        <i class="fa fa-line-chart mr-3 text-2xl"></i> 业务需求
+                    </h3>
+                    <button id="downloadBusiness" class="bg-business hover:bg-business/90 text-white px-4 py-2 rounded-lg transition-all flex items-center">
+                        <i class="fa fa-download mr-2"></i> PNG下载
+                    </button>
+                </div>
+                
+                <div class="p-1">
+                    <div class="relative" style="padding-bottom: 75%;">
+                        <svg id="businessChart" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 450" class="absolute top-0 left-0 w-full h-full">
+                            <!-- 业务需求主背景 -->
+                            <rect x="20" y="20" width="560" height="410" rx="8" ry="8" class="chart-gradient-business"/>
+                            
+                            <!-- 标题区域 -->
+                            <rect x="40" y="40" width="520" height="60" rx="6" ry="6" fill="white" opacity="0.9"/>
+                            <text x="300" y="78" font-family="Arial, sans-serif" font-size="24" font-weight="bold" text-anchor="middle" fill="#2563eb">业务需求</text>
+                            
+                            <!-- 内容区域 - 左侧数字图标 + 右侧文字 -->
+                            <rect x="40" y="120" width="520" height="100" rx="6" ry="6" fill="white" opacity="0.85"/>
+                            <circle cx="90" cy="170" r="25" fill="#2563eb"/>
+                            <text x="90" y="180" font-family="Arial, sans-serif" font-size="28" text-anchor="middle" fill="white">1</text>
+                            <text x="320" y="160" font-family="Arial, sans-serif" font-size="18" font-weight="bold" text-anchor="middle" fill="#1e40af">战略定位</text>
+                            <text x="320" y="185" font-family="Arial, sans-serif" font-size="14" text-anchor="middle" fill="#1e40af">十五五规划的重点项目，未来5年持续建设</text>
+                            
+                            <rect x="40" y="240" width="520" height="100" rx="6" ry="6" fill="white" opacity="0.85"/>
+                            <circle cx="90" cy="290" r="25" fill="#2563eb"/>
+                            <text x="90" y="300" font-family="Arial, sans-serif" font-size="28" text-anchor="middle" fill="white">2</text>
+                            <text x="320" y="280" font-family="Arial, sans-serif" font-size="18" font-weight="bold" text-anchor="middle" fill="#1e40af">智能升级</text>
+                            <text x="320" y="305" font-family="Arial, sans-serif" font-size="14" text-anchor="middle" fill="#1e40af">聚焦制造业、实业智能化场景落地，实现AI赋能升级</text>
+                            
+                            <rect x="40" y="360" width="520" height="60" rx="6" ry="6" fill="white" opacity="0.85"/>
+                            <circle cx="90" cy="390" r="25" fill="#2563eb"/>
+                            <text x="90" y="400" font-family="Arial, sans-serif" font-size="28" text-anchor="middle" fill="white">3</text>
+                            <text x="320" y="390" font-family="Arial, sans-serif" font-size="18" font-weight="bold" text-anchor="middle" fill="#1e40af">创新赋能</text>
+                            <text x="320" y="415" font-family="Arial, sans-serif" font-size="14" text-anchor="middle" fill="#1e40af">借助AI大模型技术，赋能场景创新</text>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 技术需求图表 - 已改为数字1、2、3图标 -->
+            <div class="bg-white rounded-xl overflow-hidden card-shadow card-hover">
+                <div class="p-5 border-b border-gray-100 flex justify-between items-center">
+                    <h3 class="text-xl font-bold text-technical flex items-center">
+                        <i class="fa fa-cogs mr-3 text-2xl"></i> 技术需求
+                    </h3>
+                    <button id="downloadTechnical" class="bg-technical hover:bg-technical/90 text-white px-4 py-2 rounded-lg transition-all flex items-center">
+                        <i class="fa fa-download mr-2"></i> PNG下载
+                    </button>
+                </div>
+                
+                <div class="p-1">
+                    <div class="relative" style="padding-bottom: 75%;">
+                        <svg id="technicalChart" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 450" class="absolute top-0 left-0 w-full h-full">
+                            <!-- 技术需求主背景 -->
+                            <rect x="20" y="20" width="560" height="410" rx="8" ry="8" class="chart-gradient-technical"/>
+                            
+                            <!-- 标题区域 -->
+                            <rect x="40" y="40" width="520" height="60" rx="6" ry="6" fill="white" opacity="0.9"/>
+                            <text x="300" y="78" font-family="Arial, sans-serif" font-size="24" font-weight="bold" text-anchor="middle" fill="#dc2626">技术需求</text>
+                            
+                            <!-- 内容区域 - 左侧数字图标 + 右侧文字 -->
+                            <rect x="40" y="120" width="520" height="100" rx="6" ry="6" fill="white" opacity="0.85"/>
+                            <!-- 数字1图标 -->
+                            <circle cx="90" cy="170" r="25" fill="#dc2626"/>
+                            <text x="90" y="180" font-family="Arial, sans-serif" font-size="28" text-anchor="middle" fill="white">1</text>
+                            <!-- 文字 -->
+                            <text x="320" y="160" font-family="Arial, sans-serif" font-size="18" font-weight="bold" text-anchor="middle" fill="#b91c1c">智能体管理</text>
+                            <text x="320" y="185" font-family="Arial, sans-serif" font-size="14" text-anchor="middle" fill="#b91c1c">智能体开发、调试、评测、发布、应用、观测等全生命周期管理</text>
+                            
+                            <rect x="40" y="240" width="520" height="100" rx="6" ry="6" fill="white" opacity="0.85"/>
+                            <!-- 数字2图标 -->
+                            <circle cx="90" cy="290" r="25" fill="#dc2626"/>
+                            <text x="90" y="300" font-family="Arial, sans-serif" font-size="28" text-anchor="middle" fill="white">2</text>
+                            <!-- 文字 -->
+                            <text x="320" y="280" font-family="Arial, sans-serif" font-size="18" font-weight="bold" text-anchor="middle" fill="#b91c1c">知识管理</text>
+                            <text x="320" y="305" font-family="Arial, sans-serif" font-size="14" text-anchor="middle" fill="#b91c1c">文档、操作手册、专业术语等内容向量化及智能体结合</text>
+                            
+                            <rect x="40" y="360" width="520" height="60" rx="6" ry="6" fill="white" opacity="0.85"/>
+                            <!-- 数字3图标 -->
+                            <circle cx="90" cy="390" r="25" fill="#dc2626"/>
+                            <text x="90" y="400" font-family="Arial, sans-serif" font-size="28" text-anchor="middle" fill="white">3</text>
+                            <!-- 文字 -->
+                            <text x="320" y="390" font-family="Arial, sans-serif" font-size="18" font-weight="bold" text-anchor="middle" fill="#b91c1c">模型管理</text>
+                            <text x="320" y="415" font-family="Arial, sans-serif" font-size="14" text-anchor="middle" fill="#b91c1c">模型接入、探索、精调、评测及集成管理</text>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 图表说明 -->
+        <div class="bg-white rounded-xl p-6 card-shadow mb-10">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4">图表设计说明</h3>
+            <div class="grid md:grid-cols-2 gap-6 text-gray-700">
+                <div>
+                    <h4 class="font-medium text-business mb-2">业务需求图表</h4>
+                    <ul class="list-disc pl-5 space-y-1">
+                        <li>蓝色渐变背景，体现业务稳重性</li>
+                        <li>数字1、2、3圆形图标，明确展示优先级</li>
+                        <li>半透明白色内容框提升文字可读性</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-medium text-technical mb-2">技术需求图表</h4>
+                    <ul class="list-disc pl-5 space-y-1">
+                        <li>红色渐变背景，突出技术活力</li>
+                        <li>统一采用数字1、2、3圆形图标，保持系列一致性</li>
+                        <li>半透明白色内容框提升文字可读性</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- 页脚 -->
+        <footer class="text-center text-gray-500 text-sm py-4">
+            <p>© 2023 中信戴卡AI大模型项目 | 统一数字图标需求图表展示</p>
+        </footer>
+    </div>
+
+    <!-- 下载功能脚本 -->
+    <script>
+        // SVG转PNG并下载功能
+        function downloadAsPng(svgId, fileName) {
+            const svg = document.getElementById(svgId);
+            const serializer = new XMLSerializer();
+            let svgString = serializer.serializeToString(svg);
+            
+            // 添加XML声明
+            svgString = '<?xml version="1.0" encoding="UTF-8"?>\n' + svgString;
+            
+            // 创建图片对象
+            const img = new Image();
+            const blob = new Blob([svgString], {type: 'image/svg+xml;charset=utf-8'});
+            const url = URL.createObjectURL(blob);
+            
+            img.onload = function() {
+                // 创建Canvas并绘制
+                const canvas = document.createElement('canvas');
+                canvas.width = 600;
+                canvas.height = 450;
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(img, 0, 0);
+                
+                // 创建下载链接
+                const link = document.createElement('a');
+                link.download = fileName;
+                link.href = canvas.toDataURL('image/png');
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                
+                // 清理资源
+                URL.revokeObjectURL(url);
+                
+                // 提示信息
+                alert(`已成功下载：${fileName}`);
+            };
+            
+            img.src = url;
+        }
+        
+        // 绑定下载按钮事件
+        document.getElementById('downloadBusiness').addEventListener('click', () => {
+            downloadAsPng('businessChart', '中信戴卡-业务需求图表.png');
+        });
+        
+        document.getElementById('downloadTechnical').addEventListener('click', () => {
+            downloadAsPng('technicalChart', '中信戴卡-技术需求图表.png');
+        });
+
+        // 页面加载动画
+        document.addEventListener('DOMContentLoaded', () => {
+            const cards = document.querySelectorAll('.card-hover');
+            cards.forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                
+                setTimeout(() => {
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, 150 + (index * 200));
+            });
+        });
+    </script>
+</body>
+</html>
+
